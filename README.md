@@ -1,2 +1,2 @@
 # Optica_ASP
-Proyecto en lenguase ASP.NET MVC
+Proyecto en lenguaje de programacion ASP.NET MVC
