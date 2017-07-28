@@ -21,7 +21,7 @@ namespace Optica_ASP.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
-            : base("DefaultConnection", throwIfV1Schema: false)
+            : base("DB_Optidca", throwIfV1Schema: false)
         {
         }
 

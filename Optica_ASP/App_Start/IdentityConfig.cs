@@ -11,24 +11,22 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using Optica_ASP.Models;
+using SendGrid;
+using SendGrid.Helpers.Mail;
+using System.Configuration;
 
 namespace Optica_ASP
 {
     public class EmailService : IIdentityMessageService
     {
-        public Task SendAsync(IdentityMessage message)
+        public async Task SendAsync(IdentityMessage message)
         {
-            // Conecte su servicio de correo electrónico aquí para enviar correo electrónico.
-            return Task.FromResult(0);
-        }
-    }
+            var client = new SendGridClient(ConfigurationManager.AppSettings["SendGrid:Key"]);
+            var from = new EmailAddress("david.vanegas@d2m.co");
+            var to = new EmailAddress(message.Destination);
+            var email = MailHelper.CreateSingleEmail(@from, to, message.Subject, message.Body, message.Body);
 
-    public class SmsService : IIdentityMessageService
-    {
-        public Task SendAsync(IdentityMessage message)
-        {
-            // Conecte el servicio SMS aquí para enviar un mensaje de texto.
-            return Task.FromResult(0);
+            await client.SendEmailAsync(email);
         }
     }
 
@@ -67,22 +65,20 @@ namespace Optica_ASP
 
             // Registre proveedores de autenticación en dos fases. Esta aplicación usa los pasos Teléfono y Correo electrónico para recibir un código para comprobar el usuario
             // Puede escribir su propio proveedor y conectarlo aquí.
-            manager.RegisterTwoFactorProvider("Código telefónico", new PhoneNumberTokenProvider<ApplicationUser>
-            {
-                MessageFormat = "Su código de seguridad es {0}"
-            });
             manager.RegisterTwoFactorProvider("Código de correo electrónico", new EmailTokenProvider<ApplicationUser>
             {
                 Subject = "Código de seguridad",
                 BodyFormat = "Su código de seguridad es {0}"
             });
             manager.EmailService = new EmailService();
-            manager.SmsService = new SmsService();
             var dataProtectionProvider = options.DataProtectionProvider;
             if (dataProtectionProvider != null)
             {
                 manager.UserTokenProvider = 
-                    new DataProtectorTokenProvider<ApplicationUser>(dataProtectionProvider.Create("ASP.NET Identity"));
+                    new DataProtectorTokenProvider<ApplicationUser>(dataProtectionProvider.Create("ASP.NET Identity"))
+                    {
+                        TokenLifespan = TimeSpan.FromHours(3)
+                    };
             }
             return manager;
         }

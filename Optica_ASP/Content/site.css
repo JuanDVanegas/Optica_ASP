@@ -1,4 +1,4 @@
-@charset "utf-8";
+﻿@charset "utf-8";
 body {
     padding-top: 50px;
     padding-bottom: 20px;
@@ -18,13 +18,10 @@ textarea {
 iframe{
 	border:0;	
 }
-.fondo{
-	background-image: url(../images/fondo.jpg);
-	background-size:100%;
-}
 
 .white-transparent{
-	padding:15px;
+    padding-top:10px;
+    padding-bottom:10px;
 	background-color: rgba(255,255,255,0.75);
 	border-radius:5px;
 }
