@@ -1,0 +1,70 @@
+@charset "utf-8";
+.btn-primary{
+	color:#fff;
+	border-color:#2C71FF;
+	background-color: #66ADFF;
+	font-weight: bold;
+}
+.btn-primary:hover,
+.btn-primary:active,
+.btn-primary:focus{
+	color:#fff;
+	border-color: #2C71FF;
+	background-color: #2C71FF;
+}
+.navbar-inverse {
+  background-color: #66ADFF;
+  border-color: #080808;
+}
+
+.navbar-inverse .navbar-brand {
+  color: #eee;
+  text-shadow: 1px 1px #333;
+}
+
+.navbar-inverse .navbar-brand:hover,
+.navbar-inverse .navbar-brand:focus {
+  color: #fff;
+  background-color: transparent;
+  text-shadow:0px 0px #000;
+}
+
+.navbar-inverse .navbar-nav > li > a {
+  color: #eee;
+  text-shadow: 1px 1px #333;
+}
+
+.navbar-inverse .navbar-nav > li > a:hover,
+.navbar-inverse .navbar-nav > li > a:focus {
+  color: #ffffff;
+  background-color: transparent;
+  color: #fff;
+  text-shadow:0px 0px #000;
+}
+
+.navbar-inverse .navbar-toggle {
+  border-color: #fff;
+}
+
+.navbar-inverse .navbar-toggle:hover,
+.navbar-inverse .navbar-toggle:focus {
+  background-color: #2C71FF;
+}
+
+.navbar-inverse .navbar-collapse,
+.navbar-inverse .navbar-form {
+  border-color: #fff;
+}
+
+.carousel-caption {
+    position: absolute;
+    right: 15%;
+    bottom: 20px;
+    left: 15%;
+    z-index: 10;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    color: #fff;
+    text-align: center;
+    text-shadow: 0 1px 2px rgb(0,0,0);
+}
