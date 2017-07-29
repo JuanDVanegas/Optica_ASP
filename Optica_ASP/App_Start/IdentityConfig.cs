@@ -14,19 +14,44 @@ using Optica_ASP.Models;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 using System.Configuration;
+using System.Web.Services.Description;
+using System.Net.Mail;
+using System.Net.Mime;
+using System.Net;
 
 namespace Optica_ASP
 {
     public class EmailService : IIdentityMessageService
     {
-        public async Task SendAsync(IdentityMessage message)
+        public  Task SendAsync(IdentityMessage message)
         {
-            var client = new SendGridClient(ConfigurationManager.AppSettings["SendGrid:Key"]);
-            var from = new EmailAddress("david.vanegas@d2m.co");
-            var to = new EmailAddress(message.Destination);
-            var email = MailHelper.CreateSingleEmail(@from, to, message.Subject, message.Body, message.Body);
+            return Task.Factory.StartNew(() =>
+            {
+                sendMail(message);
+            });
+        }
 
-            await client.SendEmailAsync(email);
+        void sendMail(IdentityMessage message)
+        {
+            #region formatter
+            string text = string.Format("Haga clic en este enlace para {0} : {1}", message.Subject, message.Body);
+            string html = "Haga clic en este enlace para " + message.Subject + ": <a href=\"" + message.Body + "\">link</a><br/>";
+
+            html += HttpUtility.HtmlEncode(@"O copie este link en su navegador: " + message.Body);
+            #endregion
+
+            MailMessage msg = new MailMessage();
+            msg.From = new MailAddress("david.vanegas@d2m.co");
+            msg.To.Add(new MailAddress(message.Destination));
+            msg.Subject = message.Subject;
+            msg.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(text, null, MediaTypeNames.Text.Plain));
+            msg.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(html, null, MediaTypeNames.Text.Html));
+
+            SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", Convert.ToInt32(587));
+            NetworkCredential credentials = new NetworkCredential("david.vanegas@d2m.co", "");
+            smtpClient.Credentials = credentials;
+            smtpClient.EnableSsl = true;
+            smtpClient.Send(msg);
         }
     }
 
@@ -70,12 +95,13 @@ namespace Optica_ASP
                 Subject = "Código de seguridad",
                 BodyFormat = "Su código de seguridad es {0}"
             });
+
             manager.EmailService = new EmailService();
             var dataProtectionProvider = options.DataProtectionProvider;
             if (dataProtectionProvider != null)
             {
                 manager.UserTokenProvider = 
-                    new DataProtectorTokenProvider<ApplicationUser>(dataProtectionProvider.Create("ASP.NET Identity"))
+                    new DataProtectorTokenProvider<ApplicationUser>(dataProtectionProvider.Create())
                     {
                         TokenLifespan = TimeSpan.FromHours(3)
                     };
@@ -100,6 +126,17 @@ namespace Optica_ASP
         public static ApplicationSignInManager Create(IdentityFactoryOptions<ApplicationSignInManager> options, IOwinContext context)
         {
             return new ApplicationSignInManager(context.GetUserManager<ApplicationUserManager>(), context.Authentication);
+        }
+    }
+
+    public class ApplicationRoleManager: RoleManager<ApplicationRole>
+    {
+        public ApplicationRoleManager(IRoleStore<ApplicationRole, string> roleStore): base(roleStore) { }
+
+        public static ApplicationRoleManager Create(IdentityFactoryOptions<ApplicationRoleManager> options,IOwinContext context)
+        {
+            var applicationRoleManager = new ApplicationRoleManager(new RoleStore<ApplicationRole>(context.Get<ApplicationDbContext>()));
+            return applicationRoleManager;
         }
     }
 }

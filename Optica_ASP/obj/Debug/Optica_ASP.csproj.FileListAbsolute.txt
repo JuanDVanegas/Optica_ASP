@@ -102,3 +102,6 @@ C:\Users\Jorge\Documents\JUAN DAVID\Proyecto\Optica_ASP\Optica_ASP\obj\Debug\Opt
 C:\Users\Jorge\Documents\JUAN DAVID\Proyecto\Optica_ASP\Optica_ASP\bin\SendGrid.dll
 C:\Users\Jorge\Documents\JUAN DAVID\Proyecto\Optica_ASP\Optica_ASP\bin\SendGrid.pdb
 C:\Users\Jorge\Documents\JUAN DAVID\Proyecto\Optica_ASP\Optica_ASP\bin\SendGrid.xml
+C:\Users\Jorge\Documents\JUAN DAVID\Proyecto\Optica_ASP\Optica_ASP\obj\Debug\Optica_ASP.Migrations.InitialCreate.resources
+C:\Users\Jorge\Documents\JUAN DAVID\Proyecto\Optica_ASP\Optica_ASP\obj\Debug\Optica_ASP.csproj.GenerateResource.Cache
+C:\Users\Jorge\Documents\JUAN DAVID\Proyecto\Optica_ASP\Optica_ASP\obj\Debug\Optica_ASP.Migrations.role.resources

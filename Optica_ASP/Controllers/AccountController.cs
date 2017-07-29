@@ -17,39 +17,21 @@ namespace Optica_ASP.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
-
-        public AccountController()
-        {
-        }
-
+        public AccountController() { }
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
         {
             UserManager = userManager;
             SignInManager = signInManager;
         }
-
         public ApplicationSignInManager SignInManager
         {
-            get
-            {
-                return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
-            }
-            private set 
-            { 
-                _signInManager = value; 
-            }
+            get { return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>(); }
+            private set { _signInManager = value; }
         }
-
         public ApplicationUserManager UserManager
         {
-            get
-            {
-                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
-            }
-            private set
-            {
-                _userManager = value;
-            }
+            get { return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>(); }
+            private set{ _userManager = value; }
         }
 
         //
@@ -70,6 +52,15 @@ namespace Optica_ASP.Controllers
         {
             if (!ModelState.IsValid)
             {
+                return View(model);
+            }
+
+            var user = UserManager.FindByName(model.Email);
+            var emailconfirmed = UserManager.IsEmailConfirmed(user.Id);
+
+            if(emailconfirmed == false)
+            {
+                ModelState.AddModelError("", "Su correo electronico no ha sido confirmado");
                 return View(model);
             }
 
@@ -102,25 +93,26 @@ namespace Optica_ASP.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
-            if (ModelState.IsValid)
+            var identityUser = await UserManager.FindByEmailAsync(model.Email);
+            if(identityUser != null)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                var result = await UserManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
-                {
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:true);
-
-                    // Para obtener más información sobre cómo habilitar la confirmación de cuenta y el restablecimiento de contraseña, visite http://go.microsoft.com/fwlink/?LinkID=320771
-                    // Enviar correo electrónico con este vínculo
-                    string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    await UserManager.SendEmailAsync(user.Id, "Confirmar cuenta", "Para confirmar la cuenta, haga clic <a href=\"" + callbackUrl + "\">aquí</a>");
-
-                    return RedirectToAction("Index", "Home");
-                }
-                AddErrors(result);
+                ModelState.AddModelError("", "No es posible registrar este usuario.");
+                return View(model);
             }
 
+            var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+            var result = await UserManager.CreateAsync(user, model.Password);
+            if (result.Succeeded)
+            {
+                // Para obtener más información sobre cómo habilitar la confirmación de cuenta y el restablecimiento de contraseña, visite http://go.microsoft.com/fwlink/?LinkID=320771
+                // Enviar correo electrónico con este vínculo
+                string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                await UserManager.SendEmailAsync(user.Id, "Confirmar cuenta", callbackUrl);
+
+                return RedirectToAction("ConfirmEmailSend", "Account");
+            }
+            AddErrors(result);
             // Si llegamos a este punto, es que se ha producido un error y volvemos a mostrar el formulario
             return View(model);
         }
@@ -146,6 +138,12 @@ namespace Optica_ASP.Controllers
             return View();
         }
 
+        [AllowAnonymous]
+        public ActionResult ConfirmEmailSend()
+        {
+            return View();
+        }
+
         //
         // POST: /Account/ForgotPassword
         [HttpPost]
@@ -166,7 +164,7 @@ namespace Optica_ASP.Controllers
                 // Enviar correo electrónico con este vínculo
                 string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
                 var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                await UserManager.SendEmailAsync(user.Id, "Restablecer contraseña", "Para restablecer la contraseña, haga clic <a href=\"" + callbackUrl + "\">aquí</a>");
+                await UserManager.SendEmailAsync(user.Id, "Restablecer contraseña", callbackUrl);
                 return RedirectToAction("ForgotPasswordConfirmation", "Account");
             }
 
