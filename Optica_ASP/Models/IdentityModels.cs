@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Collections.Generic;
+using System;
 
 namespace Optica_ASP.Models
 {
@@ -17,6 +18,23 @@ namespace Optica_ASP.Models
             // Agregar aquí notificaciones personalizadas de usuario
             return userIdentity;
         }
+
+        public ApplicationUser()
+        {
+            UserData = new List<UserData>();
+        }
+        public virtual ICollection<UserData> UserData { get; private set; }
+    }
+
+    public class UserData
+    {
+        public string Id { get; set; }
+        public string UserId { get; set; }
+        public string Nombre { get; set; }
+        public string Apellido { get; set; }
+        public string TipoDocumetno { get; set; }
+        public string Documento { get; set; }
+        public DateTime FechaNacimiento { get; set; }
     }
 
     public class ApplicationRole : IdentityRole
@@ -31,10 +49,22 @@ namespace Optica_ASP.Models
             : base("DB_Optidca", throwIfV1Schema: false)
         {
         }
-
         public static ApplicationDbContext Create()
         {
             return new ApplicationDbContext();
+        }
+
+        public DbSet<UserData> UserData { get; set; }
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            var userData = modelBuilder.Entity<UserData>();
+            userData.ToTable("AspNetUserData");
+            userData.HasKey(x => x.Id);
+
+            var user = modelBuilder.Entity<ApplicationUser>();
+            user.HasMany(x => x.UserData).WithRequired().HasForeignKey(x => x.UserId);
         }
     }
 }
