@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Security.Claims;
@@ -17,11 +18,21 @@ namespace Optica_ASP.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private ApplicationRoleManager _roleManager;
         public AccountController() { }
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
+        public AccountController(
+            ApplicationUserManager userManager, 
+            ApplicationSignInManager signInManager, 
+            ApplicationRoleManager roleManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;
+            RoleManager = roleManager;
+        }
+        public ApplicationRoleManager RoleManager
+        {
+            get { return _roleManager ?? HttpContext.GetOwinContext().Get<ApplicationRoleManager>(); }
+            private set { _roleManager = value; }
         }
         public ApplicationSignInManager SignInManager
         {
@@ -83,6 +94,14 @@ namespace Optica_ASP.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
+            List<SelectListItem> list = new List<SelectListItem>();
+            foreach (var role in RoleManager.Roles)
+                //if (role.Name != "Admin")
+                //{
+                //    list.Add(new SelectListItem { Value = role.Name, Text = role.Name });
+                //}
+                list.Add(new SelectListItem { Value = role.Name, Text = role.Name });
+            ViewBag.Roles = list;
             return View();
         }
 
@@ -101,9 +120,11 @@ namespace Optica_ASP.Controllers
             }
 
             var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+            user.UserData.Add(new UserData {Nombre = model.Nombre, Apellido = model.Apellido, UserId = user.Id});
             var result = await UserManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
             {
+                result = await UserManager.AddToRoleAsync(user.Id, model.RoleName);
                 // Para obtener más información sobre cómo habilitar la confirmación de cuenta y el restablecimiento de contraseña, visite http://go.microsoft.com/fwlink/?LinkID=320771
                 // Enviar correo electrónico con este vínculo
                 string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);

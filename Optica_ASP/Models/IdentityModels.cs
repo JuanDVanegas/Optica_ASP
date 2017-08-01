@@ -32,9 +32,20 @@ namespace Optica_ASP.Models
         public string UserId { get; set; }
         public string Nombre { get; set; }
         public string Apellido { get; set; }
-        public string TipoDocumetno { get; set; }
+        public UserData()
+        {
+            TipoDocumento = new List<DocumentType>();
+        }
+        public virtual ICollection<DocumentType> TipoDocumento { get; private set; }
         public string Documento { get; set; }
         public DateTime FechaNacimiento { get; set; }
+
+    }
+
+    public class DocumentType
+    {
+        public string Id { get; set; }
+        public string TipoDocumento { get; set; }
     }
 
     public class ApplicationRole : IdentityRole
@@ -62,6 +73,11 @@ namespace Optica_ASP.Models
             var userData = modelBuilder.Entity<UserData>();
             userData.ToTable("AspNetUserData");
             userData.HasKey(x => x.Id);
+            userData.HasMany(x => x.TipoDocumento).WithRequired().HasForeignKey(x => x.Id);
+
+            var document = modelBuilder.Entity<DocumentType>();
+            document.ToTable("AspNetDocumentType");
+            document.HasKey(x => x.Id);
 
             var user = modelBuilder.Entity<ApplicationUser>();
             user.HasMany(x => x.UserData).WithRequired().HasForeignKey(x => x.UserId);

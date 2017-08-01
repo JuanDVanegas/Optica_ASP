@@ -9,6 +9,7 @@ namespace Optica_ASP.Migrations
     {
         public Configuration()
         {
+            AutomaticMigrationDataLossAllowed = true;
             AutomaticMigrationsEnabled = true;
             ContextKey = "Optica_ASP.Models.ApplicationDbContext";
         }
