@@ -48,9 +48,8 @@ namespace Optica_ASP.Controllers
         //
         // GET: /Account/Login
         [AllowAnonymous]
-        public ActionResult Login(string returnUrl)
+        public ActionResult Login()
         {
-            ViewBag.ReturnUrl = returnUrl;
             return View();
         }
 
@@ -59,7 +58,7 @@ namespace Optica_ASP.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
+        public async Task<ActionResult> Login(LoginViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -81,7 +80,7 @@ namespace Optica_ASP.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
+                    return RedirectToAction("Index","ManageAccount");
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 default:
@@ -96,12 +95,17 @@ namespace Optica_ASP.Controllers
         {
             List<SelectListItem> list = new List<SelectListItem>();
             foreach (var role in RoleManager.Roles)
-                //if (role.Name != "Admin")
-                //{
-                //    list.Add(new SelectListItem { Value = role.Name, Text = role.Name });
-                //}
-                list.Add(new SelectListItem { Value = role.Name, Text = role.Name });
+                if (role.Name != "Admin")
+                {
+                    list.Add(new SelectListItem { Value = role.Name, Text = role.Name });
+                }
             ViewBag.Roles = list;
+
+            List<SelectListItem> dType = new List<SelectListItem>();
+            dType.Add(new SelectListItem { Value = "Cedula de Ciudadania", Text = "Cedula de Ciudadania" });
+            dType.Add(new SelectListItem { Value = "Tarjeta de Identidad", Text = "Tarjeta de Identidad" });
+            ViewBag.DTypes = dType;
+
             return View();
         }
 
@@ -118,9 +122,18 @@ namespace Optica_ASP.Controllers
                 ModelState.AddModelError("", "No es posible registrar este usuario.");
                 return View(model);
             }
-
-            var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-            user.UserData.Add(new UserData {Nombre = model.Nombre, Apellido = model.Apellido, UserId = user.Id});
+            var user = new ApplicationUser {
+                UserName = model.Email,
+                Email = model.Email
+            };
+            user.UserData.Add(new UserData {
+                Nombre = model.Nombre,
+                Apellido = model.Apellido,
+                TipoDocumento = model.TipoDocumento,
+                Documento = model.Documento,
+                FechaNacimiento = model.FechaNacimiento,
+                UserId = user.Id
+            });
             var result = await UserManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
             {

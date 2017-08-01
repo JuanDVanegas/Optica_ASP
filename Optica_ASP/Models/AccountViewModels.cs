@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Optica_ASP.Models
@@ -80,10 +81,24 @@ namespace Optica_ASP.Models
         [Compare("Password", ErrorMessage = "La contraseña y la contraseña de confirmación no coinciden.")]
         public string ConfirmPassword { get; set; }
 
+        [Display(Name = "Rol de Usuario")]
         public string RoleName { get; set; }
+
+        [Display(Name = "Nombre")]
         public string Nombre { get; set; }
+
+        [Display(Name = "Apellido")]
         public string Apellido { get; set; }
+
+        [Display(Name = "Tipo de Documento")]
         public string TipoDocumento { get; set; }
+
+        [Display(Name = "Numero de Documento")]
+        public string Documento { get; set; }
+
+        [DataType(DataType.Date)]
+        [Display(Name = "Fecha de Nacimiento")]
+        public DateTime FechaNacimiento { get; set; }
     }
 
     public class ResetPasswordViewModel
