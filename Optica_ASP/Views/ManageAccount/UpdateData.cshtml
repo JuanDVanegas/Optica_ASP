@@ -1,0 +1,54 @@
+﻿@model Optica_ASP.Models.UpdateViewModel
+@using (Html.BeginForm("UpdateData", "ManageAccount", FormMethod.Post, new {@class = "form-horizontal", role = "form"}))
+{
+    @Html.ValidationSummary("", new { @class = "text-danger" })
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                @Html.LabelFor(m => m.Nombre, new {@class = "col-md-4 control-label"})
+                <div class="col-md-8">
+                    @Html.TextBoxFor(m => m.Nombre, new {@class = "form-control"})
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Apellido, new {@class = "col-md-4 control-label"})
+                <div class="col-md-8">
+                    @Html.TextBoxFor(m => m.Apellido, new {@class = "form-control"})
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.TipoDocumento, new { @class = "col-md-4 control-label" })
+                <div class="col-md-8">
+                    @Html.DropDownListFor(m => m.TipoDocumento, new SelectList(ViewBag.DTypes, "Value", "Text"), new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Documento, new { @class = "col-md-4 control-label" })
+                <div class="col-md-8">
+                    @Html.TextBoxFor(m => m.Documento, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.FechaNacimiento, new { @class = "col-md-4 control-label" })
+                <div class="col-md-8">
+                    @Html.TextBoxFor(model => model.FechaNacimiento, new
+                    {
+                        @class = "form-control",
+                        type = "date"
+                    })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Email, new { @class = "col-md-4 control-label" })
+                <div class="col-md-8">
+                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-4 col-md-8">
+                    <input type="submit" value="Actualizar" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+    </div>
+}

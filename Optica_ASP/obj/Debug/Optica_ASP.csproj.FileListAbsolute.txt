@@ -324,3 +324,7 @@ C:\Users\Juan David\Documents\GitHub\Optica_ASP\Optica_ASP\obj\Debug\Optica_ASP.
 C:\Users\SOPORTE\Documents\Visual Studio 2015\Projects\Optica_ASP\Optica_ASP\obj\Debug\Optica_ASP.Migrations.documenttype.resources
 C:\Users\SOPORTE\Documents\Visual Studio 2015\Projects\Optica_ASP\Optica_ASP\obj\Debug\Optica_ASP.Migrations.date.resources
 C:\Users\SOPORTE\Documents\Visual Studio 2015\Projects\Optica_ASP\Optica_ASP\obj\Debug\Optica_ASP.Migrations.datetime.resources
+C:\Users\Juan David\Documents\GitHub\Optica_ASP\Optica_ASP\obj\Debug\Optica_ASP.Migrations.documenttype.resources
+C:\Users\Juan David\Documents\GitHub\Optica_ASP\Optica_ASP\obj\Debug\Optica_ASP.Migrations.date.resources
+C:\Users\Juan David\Documents\GitHub\Optica_ASP\Optica_ASP\obj\Debug\Optica_ASP.Migrations.datetime.resources
+C:\Users\Juan David\Documents\GitHub\Optica_ASP\Optica_ASP\obj\Debug\Optica_ASP.Migrations.datetodatetime.resources

@@ -5,6 +5,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Collections.Generic;
 using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Optica_ASP.Models
 {
@@ -34,6 +35,8 @@ namespace Optica_ASP.Models
         public string Apellido { get; set; }
         public string TipoDocumento { get; set; }
         public string Documento { get; set; }
+
+        [Column(TypeName = "Date")]
         public DateTime FechaNacimiento { get; set; }
 
     }
