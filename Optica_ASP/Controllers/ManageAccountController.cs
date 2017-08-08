@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -44,7 +45,6 @@ namespace Optica_ASP.Controllers
 
         public ActionResult Index()
         {
-            ViewBag.Id = User.Identity.GetUserId();
             return View();
         }
 
@@ -61,14 +61,15 @@ namespace Optica_ASP.Controllers
         //    return RedirectToAction("Index");
         //}
 
-        public async Task<ActionResult> UpdateData(string id)
+        public async Task<ActionResult> UpdateData()
         {
+            var userId = User.Identity.GetUserId();
             var model = new UpdateViewModel();
-            if (!string.IsNullOrEmpty(id))
+            if (!string.IsNullOrEmpty(userId))
             {
-                var user = await UserManager.FindByIdAsync(id);
-                var role = await RoleManager.Roles;
-                model = new UpdateViewModel(user);
+                var user = await UserManager.FindByIdAsync(userId);
+                string roleName = UserManager.GetRoles(userId).First();
+                model = new UpdateViewModel(user, roleName);
             }
 
             List<SelectListItem> dType = new List<SelectListItem>();
@@ -90,6 +91,7 @@ namespace Optica_ASP.Controllers
             };
             user.UserData.Add(new UserData
             {
+                UserId = user.Id,
                 Nombre = model.Nombre,
                 Apellido = model.Apellido,
                 TipoDocumento = model.TipoDocumento,

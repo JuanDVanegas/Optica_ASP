@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using Microsoft.AspNet.Identity;
@@ -13,8 +15,9 @@ namespace Optica_ASP.Models
         {
             
         }
-        public UpdateViewModel(ApplicationUser user)
+        public UpdateViewModel(ApplicationUser user, string roleName)
         {
+            RoleName = roleName;
             Nombre = user.UserData.First().Nombre;
             Apellido = user.UserData.First().Apellido;
             TipoDocumento = user.UserData.First().TipoDocumento;
@@ -38,8 +41,8 @@ namespace Optica_ASP.Models
         [Display(Name = "Numero de Documento")]
         public string Documento { get; set; }
 
-        [DataType(DataType.Date)]
         [Display(Name = "Fecha de Nacimiento")]
+        [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}")]
         public DateTime FechaNacimiento { get; set; }
 
         [Required]

@@ -24,7 +24,7 @@ namespace Optica_ASP.Models
         {
             UserData = new List<UserData>();
         }
-        public virtual ICollection<UserData> UserData { get; private set; }
+        public virtual ICollection<UserData> UserData { get; set; }
     }
 
     public class UserData
