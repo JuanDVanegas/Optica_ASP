@@ -84,42 +84,24 @@ namespace Optica_ASP.Controllers
         [HttpPost]
         public async Task<ActionResult> UpdateData(UpdateViewModel model)
         {
-            var user = new ApplicationUser
+            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+
+            if (user.Email != model.Email)
             {
-                UserName = model.Email,
-                Email = model.Email
-            };
-            user.UserData.Add(new UserData
-            {
-                UserId = user.Id,
-                Nombre = model.Nombre,
-                Apellido = model.Apellido,
-                TipoDocumento = model.TipoDocumento,
-                Documento = model.Documento,
-                FechaNacimiento = model.FechaNacimiento
-            });
+                user.EmailConfirmed = false;
+                string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                await UserManager.SendEmailAsync(user.Id, "Confirmar cuenta", callbackUrl);
+            }
+
+            user.UserData.First().Nombre = model.Nombre;
+            user.UserData.First().Apellido = model.Apellido;
+            user.UserData.First().TipoDocumento = model.TipoDocumento;
+            user.UserData.First().Documento = model.Documento;
+            user.UserData.First().FechaNacimiento = model.FechaNacimiento;
+
             await UserManager.UpdateAsync(user);
             return RedirectToAction("UpdateData");
         }
-
-        //public async Task<ActionResult> Details(string id)
-        //{
-        //    var role = await RoleManager.FindByIdAsync(id);
-        //    return View(new RoleViewModel(role));
-        //}
-
-        //public async Task<ActionResult> Delete(string id)
-        //{
-        //    var role = await RoleManager.FindByIdAsync(id);
-        //    return View(new RoleViewModel(role));
-        //}
-
-        //public async Task<ActionResult> DeleteConfirmed(string id)
-        //{
-        //    var role = await RoleManager.FindByIdAsync(id);
-        //    await RoleManager.DeleteAsync(role);
-        //    return RedirectToAction("Index");
-        //}
-
     }
 }

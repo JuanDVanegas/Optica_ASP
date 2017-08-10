@@ -85,18 +85,23 @@ namespace Optica_ASP.Models
         [Display(Name = "Rol de Usuario")]
         public string RoleName { get; set; }
 
-        [Display(Name = "Nombre")]
+        [Required]
+        [Display(Name = "Nombres")]
         public string Nombre { get; set; }
 
-        [Display(Name = "Apellido")]
+        [Required]
+        [Display(Name = "Apellidos")]
         public string Apellido { get; set; }
 
+        [Required]
         [Display(Name = "Tipo de Documento")]
         public string TipoDocumento { get; set; }
 
+        [Required]
         [Display(Name = "Numero de Documento")]
         public string Documento { get; set; }
 
+        [Required]
         [DataType(DataType.Date)]
         [Display(Name = "Fecha de Nacimiento")]
         public DateTime FechaNacimiento { get; set; }

@@ -26,21 +26,27 @@ namespace Optica_ASP.Models
             Email = user.Email;
         }
 
+        [Required]
         [Display(Name = "Rol de Usuario")]
         public string RoleName { get; set; }
 
+        [Required]
         [Display(Name = "Nombre")]
         public string Nombre { get; set; }
 
+        [Required]
         [Display(Name = "Apellido")]
         public string Apellido { get; set; }
 
+        [Required]
         [Display(Name = "Tipo de Documento")]
         public string TipoDocumento { get; set; }
 
+        [Required]
         [Display(Name = "Numero de Documento")]
         public string Documento { get; set; }
 
+        [Required]
         [Display(Name = "Fecha de Nacimiento")]
         [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}")]
         public DateTime FechaNacimiento { get; set; }

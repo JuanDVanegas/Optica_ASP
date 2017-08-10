@@ -48,7 +48,7 @@ namespace Optica_ASP
             msg.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(html, null, MediaTypeNames.Text.Html));
 
             SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", Convert.ToInt32(587));
-            NetworkCredential credentials = new NetworkCredential("david.vanegas@d2m.co", "@JuanDavid#7851202");
+            NetworkCredential credentials = new NetworkCredential("opticaallinone@gmail.com", "@Optica#123");
             smtpClient.Credentials = credentials;
             smtpClient.EnableSsl = true;
             smtpClient.Send(msg);

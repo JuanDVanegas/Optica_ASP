@@ -8,6 +8,7 @@ namespace Optica_ASP.Controllers
 {
     public class HomeController : Controller
     {
+        [AunteticateAuthorize]
         public ActionResult Index()
         {
             return View();

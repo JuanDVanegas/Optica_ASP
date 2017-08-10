@@ -40,6 +40,12 @@ namespace Optica_ASP.Models
         public DateTime FechaNacimiento { get; set; }
 
     }
+    public class TipoDocumento
+    {
+        public string Id { get; set; } = Guid.NewGuid().ToString();
+        public  string Nombre { get; set; }
+
+    }
     public class ApplicationRole : IdentityRole
     {
         public ApplicationRole() : base() { }
