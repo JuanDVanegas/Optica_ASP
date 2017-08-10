@@ -47,7 +47,7 @@ namespace Optica_ASP.Controllers
 
         //
         // GET: /Account/Login
-        [AllowAnonymous]
+        [AunteticateAuthorize]
         public ActionResult Login()
         {
             return View();

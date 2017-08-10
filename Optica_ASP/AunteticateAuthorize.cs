@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Owin.Security;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Linq;
@@ -8,17 +9,20 @@ using System.Web.Routing;
 
 namespace Optica_ASP
 {
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true)]
-    public class AunteticateAuthorize: AuthorizeAttribute
+    public class AunteticateAuthorize : ActionFilterAttribute
     {
-        public override void OnAuthorization(AuthorizationContext filterContext)
+        IAuthenticationManager Authentication
         {
-            base.OnAuthorization(filterContext);
-            if (filterContext.HttpContext.User.Identity.IsAuthenticated)
+            get { return HttpContext.Current.GetOwinContext().Authentication; }
+        }
+
+        public override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            if (Authentication.User.Identity.IsAuthenticated)
             {
-                filterContext.Result = new RedirectToRouteResult(
-                    new RouteValueDictionary(new { controller = "ManageAccount", action = "Index" }));
+                filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "ManageAccount", action = "Index" }));
             }
+            base.OnActionExecuting(filterContext);
         }
     }
 }
