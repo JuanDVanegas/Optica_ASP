@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.Ajax.Utilities;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
@@ -48,6 +49,7 @@ namespace Optica_ASP.Controllers
         //
         // GET: /Account/Login
         [AunteticateAuthorize]
+        [AllowAnonymous]
         public ActionResult Login()
         {
             return View();
@@ -64,23 +66,23 @@ namespace Optica_ASP.Controllers
             {
                 return View(model);
             }
-
-            var user = UserManager.FindByName(model.Email);
-            var emailconfirmed = UserManager.IsEmailConfirmed(user.Id);
-
-            if(emailconfirmed == false)
+            var user = await  UserManager.FindByEmailAsync(model.Email);
+            if (user != null)
             {
-                ModelState.AddModelError("", "Su correo electronico no ha sido confirmado");
-                return View(model);
+                var emailconfirmed = await UserManager.IsEmailConfirmedAsync(user.Id);
+                if (!emailconfirmed)
+                {
+                    ModelState.AddModelError("", "Su correo electronico no ha sido confirmado");
+                    return View(model);
+                }
             }
-
             // No cuenta los errores de inicio de sesión para el bloqueo de la cuenta
             // Para permitir que los errores de contraseña desencadenen el bloqueo de la cuenta, cambie a shouldLockout: true
             var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: true);
             switch (result)
             {
                 case SignInStatus.Success:
-                    return RedirectToAction("Index","ManageAccount");
+                    return RedirectToAction("Index", "ManageAccount");
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 default:
@@ -90,6 +92,7 @@ namespace Optica_ASP.Controllers
         }
 
         // GET: /Account/Register
+        [AunteticateAuthorize]
         [AllowAnonymous]
         public ActionResult Register()
         {

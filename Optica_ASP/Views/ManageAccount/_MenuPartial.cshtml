@@ -1,0 +1,29 @@
+﻿@using Microsoft.AspNet.Identity
+@if (User.IsInRole("Admin"))
+{
+    <div class="sidebar-nav">
+        <div class="navbar navbar-default" role="navigation">
+            <ul class="nav navbar-nav">
+                <li><a href='@Url.Action("Index", "ManageAccount")'>Inicio<span class="glyphicon glyphicon-home pull-right" aria-hidden="true" /></a></li>
+                <li><a href='@Url.Action("UpdateData", "ManageAccount")'>Perfil<span class="glyphicon glyphicon-user pull-right" aria-hidden="true" /></a></li>
+                <li><a href="#">
+                    Users<span class="glyphicon glyphicon-user pull-right" aria-hidden="true"/>
+                         <span class="glyphicon glyphicon-user pull-right" aria-hidden="true"/>
+                </a></li>
+                <li><a href='@Url.Action("Index", "Role")'>Roles<span class="glyphicon glyphicon-wrench pull-right" aria-hidden="true" /></a></li>
+            </ul>
+        </div>
+    </div>
+}
+else
+{
+    <div class="sidebar-nav">
+        <div class="navbar navbar-default" role="navigation">
+            <ul class="nav navbar-nav">
+                <li><a href='@Url.Action("Index", "ManageAccount")'>Inicio<span class="glyphicon glyphicon-home pull-right" aria-hidden="true" /></a></li>
+                <li><a href='@Url.Action("UpdateData", "ManageAccount")'>Perfil<span class="glyphicon glyphicon-user pull-right" aria-hidden="true" /></a></li>
+                <li><a href="#">Historial<span class="glyphicon glyphicon-list-alt pull-right" aria-hidden="true" /></a></li>
+            </ul>
+        </div>
+    </div>
+}

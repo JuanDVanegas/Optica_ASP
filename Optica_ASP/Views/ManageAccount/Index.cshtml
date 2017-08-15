@@ -3,16 +3,20 @@
     ViewBag.Title = "Mi Cuenta";
 }
 
-<h2>Esta es tu cuenta</h2>
+@Html.Partial("_UserPartial")
 
 <div class="row">
     <div class="col-md-3">
-        <ul class="nav nav-pills nav-stacked">
-            <li>@Html.ActionLink("Inicio", "Index")</li>
-            <li>@Html.ActionLink("Perfil", "UpdateData")</li>
-    </ul>
-</div>
-<div class="col-md-9">
-
-</div>
+        @Html.Partial("_MenuPartial")
+    </div>
+    <div class="col-md-9">
+        <h1>Noticias</h1>
+        <div class="row">
+            <div class="col-sm-12">
+                <h2>Sistema registro actualizado</h2>
+                <p>Se ha modificado algunos parametros al momento de registrar nuevos usuarios 
+                    satisfacción para un sistema más compatible con los usuarios.</p>
+            </div>
+        </div>
+    </div>
 </div>

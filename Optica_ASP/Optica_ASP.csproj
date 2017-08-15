@@ -316,6 +316,8 @@
     <Content Include="Views\ManageAccount\Index.cshtml" />
     <Content Include="Views\ManageAccount\UpdateData.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\ManageAccount\_UserPartial.cshtml" />
+    <Content Include="Views\ManageAccount\_MenuPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

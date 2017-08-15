@@ -14,6 +14,7 @@ namespace Optica_ASP.Controllers
     [Authorize]
     public class ManageAccountController : Controller
     {
+        #region Instancias
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
         private ApplicationRoleManager _roleManager;
@@ -42,24 +43,15 @@ namespace Optica_ASP.Controllers
             get { return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>(); }
             private set { _userManager = value; }
         }
-
+        #endregion
         public ActionResult Index()
         {
+            var user = UserManager.FindById(User.Identity.GetUserId());
+            ViewBag.UserName = user.UserData.First().Nombre;
+            ViewBag.Entidad = "ABC Opticas";
+            TempData["Nombre"] = ViewBag.UserName;
             return View();
         }
-
-        //public ActionResult Create()
-        //{
-        //    return View();
-        //}
-
-        //[HttpPost]
-        //public async Task<ActionResult> CreateRegistry(RegisterViewModel model)
-        //{
-        //    var role = new ApplicationRole { Name = model.Name };
-        //    await RoleManager.CreateAsync(role);
-        //    return RedirectToAction("Index");
-        //}
 
         public async Task<ActionResult> UpdateData()
         {
