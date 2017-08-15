@@ -82,7 +82,7 @@ namespace Optica_ASP.Controllers
 
             if (user.Email != model.Email)
             {
-                user.EmailConfirmed = false;
+                user.Email = model.Email;
                 string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                 var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                 await UserManager.SendEmailAsync(user.Id, "Confirmar cuenta", callbackUrl);
