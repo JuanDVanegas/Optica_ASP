@@ -1,5 +1,5 @@
 ﻿@model Optica_ASP.Models.UpdateViewModel
-    
+@{ ViewBag.Title = "Perfil";}
 @Html.Partial("_UserPartial")
 <div class="row">
     <div class="col-md-3">
@@ -10,7 +10,7 @@
         {
             @Html.ValidationSummary("", new { @class = "text-danger" })
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-12">
                     <div class="form-group">
                         @Html.LabelFor(m => m.RoleName, new { @class = "col-md-4 control-label" })
                         <div class="col-md-8">
@@ -52,6 +52,9 @@
                         <div class="col-md-8">
                             @Html.TextBoxFor(m => m.Email, new {@class = "form-control"})
                         </div>
+                    </div>
+                    <div class="form-group">
+                        <a href='@Url.Action("ChangePassword", "Manage")' class="col-md-offset-4 col-md-8">Cambiar la contraseña</a>
                     </div>
                     <div class="form-group">
                         <div class="col-md-offset-4 col-md-8">

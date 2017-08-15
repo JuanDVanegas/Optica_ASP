@@ -49,20 +49,15 @@ namespace Optica_ASP.Controllers
             var user = UserManager.FindById(User.Identity.GetUserId());
             ViewBag.UserName = user.UserData.First().Nombre;
             ViewBag.Entidad = "ABC Opticas";
-            TempData["Nombre"] = ViewBag.UserName;
             return View();
         }
 
         public async Task<ActionResult> UpdateData()
         {
             var userId = User.Identity.GetUserId();
-            var model = new UpdateViewModel();
-            if (!string.IsNullOrEmpty(userId))
-            {
-                var user = await UserManager.FindByIdAsync(userId);
-                string roleName = UserManager.GetRoles(userId).First();
-                model = new UpdateViewModel(user, roleName);
-            }
+            var user = await UserManager.FindByIdAsync(userId);
+            string roleName = UserManager.GetRoles(userId).First();
+            var model = new UpdateViewModel(user, roleName);
 
             List<SelectListItem> dType = new List<SelectListItem>();
             dType.Add(new SelectListItem { Value = model.TipoDocumento, Text = model.TipoDocumento });
@@ -70,12 +65,19 @@ namespace Optica_ASP.Controllers
             dType.Add(new SelectListItem { Value = "Tarjeta de Identidad", Text = "Tarjeta de Identidad" });
             ViewBag.DTypes = dType;
 
+            ViewBag.UserName = user.UserData.First().Nombre;
+            ViewBag.Entidad = "ABC Opticas";
+
             return View(model);
         }
 
         [HttpPost]
         public async Task<ActionResult> UpdateData(UpdateViewModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
             var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
 
             if (user.Email != model.Email)

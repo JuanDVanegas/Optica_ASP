@@ -48,7 +48,7 @@ namespace Optica_ASP.Models
 
         [Required]
         [Display(Name = "Fecha de Nacimiento")]
-        [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}")]
+        [DataType(DataType.Date), DisplayFormat(DataFormatString = "{0:dd/MM/yy}", ApplyFormatInEditMode = true)]
         public DateTime FechaNacimiento { get; set; }
 
         [Required]

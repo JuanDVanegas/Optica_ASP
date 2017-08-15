@@ -17,6 +17,7 @@ namespace Optica_ASP.Controllers
     [Authorize]
     public class AccountController : Controller
     {
+        #region Instancias
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
         private ApplicationRoleManager _roleManager;
@@ -45,7 +46,7 @@ namespace Optica_ASP.Controllers
             get { return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>(); }
             private set{ _userManager = value; }
         }
-
+        #endregion
         //
         // GET: /Account/Login
         [AunteticateAuthorize]
