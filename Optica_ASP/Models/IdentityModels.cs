@@ -6,6 +6,8 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using System.Collections.Generic;
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+using Optica_ASP.Models;
 
 namespace Optica_ASP.Models
 {
@@ -25,27 +27,7 @@ namespace Optica_ASP.Models
             UserData = new List<UserData>();
         }
         public virtual ICollection<UserData> UserData { get; set; }
-    }
-
-    public class UserData
-    {
-        public string Id { get; set; } = Guid.NewGuid().ToString();
-        public string UserId { get; set; }
-        public string Nombre { get; set; }
-        public string Apellido { get; set; }
-        public string TipoDocumento { get; set; }
-        public string Documento { get; set; }
-
-        [Column(TypeName = "Date")]
-        public DateTime FechaNacimiento { get; set; }
-
-    }
-    public class TipoDocumento
-    {
-        public string Id { get; set; } = Guid.NewGuid().ToString();
-        public  string Nombre { get; set; }
-
-    }
+    }    
     public class ApplicationRole : IdentityRole
     {
         public ApplicationRole() : base() { }
@@ -64,6 +46,8 @@ namespace Optica_ASP.Models
         }
 
         public DbSet<UserData> UserData { get; set; }
+        public DbSet<DocumentType> DocumentType { get; set; }
+        public DbSet<Entity> Entity { get; set; }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

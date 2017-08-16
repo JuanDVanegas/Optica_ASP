@@ -202,6 +202,8 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="AunteticateAuthorize.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\DocumentTypeController.cs" />
+    <Compile Include="Controllers\EntityController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageAccountController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -237,8 +239,17 @@
     <Compile Include="Migrations\201708031627037_datetodatetime.Designer.cs">
       <DependentUpon>201708031627037_datetodatetime.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201708161824451_2tablas.cs" />
+    <Compile Include="Migrations\201708161824451_2tablas.Designer.cs">
+      <DependentUpon>201708161824451_2tablas.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201708161959162_cambioUserdata.cs" />
+    <Compile Include="Migrations\201708161959162_cambioUserdata.Designer.cs">
+      <DependentUpon>201708161959162_cambioUserdata.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\EntityModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageAccountModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -318,6 +329,16 @@
     <Content Include="Views\ManageAccount\_UserPartial.cshtml" />
     <Content Include="Views\ManageAccount\_MenuPartial.cshtml" />
     <Content Include="Views\Role\Delete.cshtml" />
+    <Content Include="Views\Entity\Create.cshtml" />
+    <Content Include="Views\Entity\Delete.cshtml" />
+    <Content Include="Views\Entity\Details.cshtml" />
+    <Content Include="Views\Entity\Edit.cshtml" />
+    <Content Include="Views\Entity\Index.cshtml" />
+    <Content Include="Views\DocumentType\Create.cshtml" />
+    <Content Include="Views\DocumentType\Delete.cshtml" />
+    <Content Include="Views\DocumentType\Details.cshtml" />
+    <Content Include="Views\DocumentType\Edit.cshtml" />
+    <Content Include="Views\DocumentType\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -351,6 +372,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201708031627037_datetodatetime.resx">
       <DependentUpon>201708031627037_datetodatetime.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708161824451_2tablas.resx">
+      <DependentUpon>201708161824451_2tablas.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708161959162_cambioUserdata.resx">
+      <DependentUpon>201708161959162_cambioUserdata.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

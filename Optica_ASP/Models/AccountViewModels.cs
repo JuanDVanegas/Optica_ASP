@@ -105,8 +105,13 @@ namespace Optica_ASP.Models
         [DataType(DataType.Date)]
         [Display(Name = "Fecha de Nacimiento")]
         public DateTime FechaNacimiento { get; set; }
-    }
 
+        [Display(Name = "Nombre de la Entidad")]
+        public string NombreEntidad { get; set; }
+
+        [Display(Name = "Codigo de la Entidad")]
+        public string CodigoEntidad { get; set; }
+    }
     public class ResetPasswordViewModel
     {
         [Required]

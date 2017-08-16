@@ -21,6 +21,7 @@ namespace Optica_ASP.Controllers
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
         private ApplicationRoleManager _roleManager;
+        private ApplicationDbContext db = new ApplicationDbContext();
         public AccountController() { }
         public AccountController(
             ApplicationUserManager userManager, 
@@ -106,8 +107,10 @@ namespace Optica_ASP.Controllers
             ViewBag.Roles = list;
 
             List<SelectListItem> dType = new List<SelectListItem>();
-            dType.Add(new SelectListItem { Value = "Cedula de Ciudadania", Text = "Cedula de Ciudadania" });
-            dType.Add(new SelectListItem { Value = "Tarjeta de Identidad", Text = "Tarjeta de Identidad" });
+
+            foreach (var documentType in db.DocumentType)
+                dType.Add(new SelectListItem { Value = documentType.Nombre, Text = documentType.Nombre });
+
             ViewBag.DTypes = dType;
 
             return View();
@@ -130,14 +133,45 @@ namespace Optica_ASP.Controllers
                 UserName = model.Email,
                 Email = model.Email
             };
-            user.UserData.Add(new UserData {
-                Nombre = model.Nombre,
-                Apellido = model.Apellido,
-                TipoDocumento = model.TipoDocumento,
-                Documento = model.Documento,
-                FechaNacimiento = model.FechaNacimiento,
-                UserId = user.Id
-            });
+            if (model.RoleName == "Medico")
+            {
+                var codigoEntidad = from entity in db.Entity
+                                    where entity.Nombre == model.NombreEntidad && entity.Codigo == model.CodigoEntidad
+                                    select entity.Id;
+
+                if (!string.IsNullOrEmpty(codigoEntidad.ToString()))
+                {
+                    user.UserData.Add(new UserData
+                    {
+                        Nombre = model.Nombre,
+                        Apellido = model.Apellido,
+                        TipoDocumento = model.TipoDocumento,
+                        Documento = model.Documento,
+                        FechaNacimiento = model.FechaNacimiento,
+                        EntidadId = codigoEntidad.ToString(),
+                        UserId = user.Id
+                    });
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Las Credenciales de la entidad Son Incorrectas");
+                    return View(model);
+                }
+            }
+            else
+            {
+                user.UserData.Add(new UserData
+                {
+                    Nombre = model.Nombre,
+                    Apellido = model.Apellido,
+                    TipoDocumento = model.TipoDocumento,
+                    Documento = model.Documento,
+                    FechaNacimiento = model.FechaNacimiento,
+                    EntidadId = null,
+                    UserId = user.Id
+                });
+            }
+            
             var result = await UserManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
             {
