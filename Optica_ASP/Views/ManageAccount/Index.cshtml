@@ -1,22 +1,12 @@
 ﻿
 @{
+    Layout = "_LayoutAccount.cshtml";
     ViewBag.Title = "Mi Cuenta";
 }
 
-@Html.Partial("_UserPartial")
-
+<h1>Noticias</h1>
 <div class="row">
-    <div class="col-md-3">
-        @Html.Partial("_MenuPartial")
-    </div>
-    <div class="col-md-9">
-        <h1>Noticias</h1>
-        <div class="row">
-            <div class="col-sm-12">
-                <h2>Sistema registro actualizado</h2>
-                <p>Se ha modificado algunos parametros al momento de registrar nuevos usuarios 
-                    satisfacción para un sistema más compatible con los usuarios.</p>
-            </div>
-        </div>
+    <div class="col-sm-12">
+        <p>Se ha modificado algunos parametros al momento de registrar nuevos usuarios satisfacción para un sistema más compatible con los usuarios.</p>
     </div>
 </div>

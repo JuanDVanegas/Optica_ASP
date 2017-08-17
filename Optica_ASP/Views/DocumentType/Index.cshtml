@@ -1,10 +1,11 @@
 ﻿@model IEnumerable<Optica_ASP.Models.DocumentType>
 
 @{
-    ViewBag.Title = "Index";
+    Layout = "../ManageAccount/_LayoutAccount.cshtml";
+    ViewBag.Title = "DocumentType";
 }
 
-<h2>Index</h2>
+<h2>@ViewBag.Title</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")

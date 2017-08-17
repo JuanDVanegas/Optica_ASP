@@ -1,0 +1,15 @@
+﻿@{
+    Layout = "../Shared/_Layout.cshtml";
+}
+
+@Html.Partial("../ManageAccount/_UserPartial")
+
+<div class="row">
+    <div class="col-md-3">
+        @Html.Partial("../ManageAccount/_MenuPartial")
+    </div>
+    <div class="col-md-9">
+        @RenderBody()
+    </div>
+</div>
+

@@ -339,6 +339,7 @@
     <Content Include="Views\DocumentType\Details.cshtml" />
     <Content Include="Views\DocumentType\Edit.cshtml" />
     <Content Include="Views\DocumentType\Index.cshtml" />
+    <Content Include="Views\ManageAccount\_LayoutAccount.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
