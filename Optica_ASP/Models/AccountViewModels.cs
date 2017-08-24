@@ -5,6 +5,17 @@ using System.Linq;
 
 namespace Optica_ASP.Models
 {
+    public class ChangeConfirmEmail
+    {
+        public ChangeConfirmEmail(ApplicationUser user)
+        {
+            Email = user.Email;
+        }
+        [Required]
+        [EmailAddress]
+        [Display(Name = "Correo electrónico")]
+        public string Email { get; set; }
+    }
     public class ExternalLoginConfirmationViewModel
     {
         [Required]

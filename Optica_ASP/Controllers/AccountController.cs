@@ -69,18 +69,9 @@ namespace Optica_ASP.Controllers
                 return View(model);
             }
             var user = await  UserManager.FindByEmailAsync(model.Email);
-            if (user != null)
-            {
-                var emailconfirmed = await UserManager.IsEmailConfirmedAsync(user.Id);
-                if (!emailconfirmed)
-                {
-                    ModelState.AddModelError("", "Su correo electronico no ha sido confirmado");
-                    return View(model);
-                }
-            }
             // No cuenta los errores de inicio de sesión para el bloqueo de la cuenta
             // Para permitir que los errores de contraseña desencadenen el bloqueo de la cuenta, cambie a shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: true);
+            var result = await SignInManager.PasswordSignInAsync(user.UserName, model.Password, model.RememberMe, shouldLockout: true);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -130,16 +121,15 @@ namespace Optica_ASP.Controllers
                 return View(model);
             }
             var user = new ApplicationUser {
-                UserName = model.Email,
+                UserName = model.Nombre,
                 Email = model.Email
             };
             if (model.RoleName == "Medico")
             {
                 var codigoEntidad = from entity in db.Entity
                                     where entity.Nombre == model.NombreEntidad && entity.Codigo == model.CodigoEntidad
-                                    select entity.Id;
-
-                if (!string.IsNullOrEmpty(codigoEntidad.ToString()))
+                                    select entity;
+                if (codigoEntidad.First().Id != null)
                 {
                     user.UserData.Add(new UserData
                     {
@@ -148,7 +138,7 @@ namespace Optica_ASP.Controllers
                         TipoDocumento = model.TipoDocumento,
                         Documento = model.Documento,
                         FechaNacimiento = model.FechaNacimiento,
-                        EntidadId = codigoEntidad.ToString(),
+                        EntidadId = codigoEntidad.First().Id,
                         UserId = user.Id
                     });
                 }
@@ -226,6 +216,7 @@ namespace Optica_ASP.Controllers
             if (ModelState.IsValid)
             {
                 var user = await UserManager.FindByNameAsync(model.Email);
+
                 if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
                 {
                     // No revelar que el usuario no existe o que no está confirmado

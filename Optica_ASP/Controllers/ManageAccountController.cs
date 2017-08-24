@@ -44,6 +44,7 @@ namespace Optica_ASP.Controllers
             private set { _userManager = value; }
         }
         #endregion
+
         public ActionResult Index()
         {
             var user = UserManager.FindById(User.Identity.GetUserId());
@@ -93,6 +94,7 @@ namespace Optica_ASP.Controllers
             user.UserData.First().TipoDocumento = model.TipoDocumento;
             user.UserData.First().Documento = model.Documento;
             user.UserData.First().FechaNacimiento = model.FechaNacimiento;
+            user.UserName = model.Nombre;
 
             await UserManager.UpdateAsync(user);
             return RedirectToAction("UpdateData");
