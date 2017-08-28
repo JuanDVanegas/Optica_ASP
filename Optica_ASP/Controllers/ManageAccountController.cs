@@ -18,6 +18,7 @@ namespace Optica_ASP.Controllers
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
         private ApplicationRoleManager _roleManager;
+        private ApplicationDbContext db = new ApplicationDbContext();
         public ManageAccountController() { }
         public ManageAccountController(
             ApplicationUserManager userManager,
@@ -48,7 +49,6 @@ namespace Optica_ASP.Controllers
         public ActionResult Index()
         {
             var user = UserManager.FindById(User.Identity.GetUserId());
-            ViewBag.UserName = user.UserData.First().Nombre;
             ViewBag.Entidad = "ABC Opticas";
             return View();
         }
@@ -89,15 +89,25 @@ namespace Optica_ASP.Controllers
                 await UserManager.SendEmailAsync(user.Id, "Confirmar cuenta", callbackUrl);
             }
 
-            user.UserData.First().Nombre = model.Nombre;
-            user.UserData.First().Apellido = model.Apellido;
-            user.UserData.First().TipoDocumento = model.TipoDocumento;
-            user.UserData.First().Documento = model.Documento;
-            user.UserData.First().FechaNacimiento = model.FechaNacimiento;
+            user.UserData.Nombre = model.Nombre;
+            user.UserData.Apellido = model.Apellido;
+            user.UserData.TipoDocumento = model.TipoDocumento;
+            user.UserData.Documento = model.Documento;
+            user.UserData.FechaNacimiento = model.FechaNacimiento;
             user.UserName = model.Nombre;
 
             await UserManager.UpdateAsync(user);
             return RedirectToAction("UpdateData");
         }
+
+        //public async Task<ActionResult> Historial(HistorialViewModel model)
+        //{
+        //    var Historial = from historial in db.Historial
+        //                    where historial == model.NombreEntidad && entity.Codigo == model.CodigoEntidad
+        //                    select historial;
+        //    if (Historial.First().Id != null)
+        //    { }
+        //    return View(model);
+        //}
     }
 }

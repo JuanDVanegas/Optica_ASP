@@ -56,4 +56,15 @@ namespace Optica_ASP.Models
         [Display(Name = "Correo electrónico")]
         public string Email { get; set; }
     }
+
+    public class HistorialViewModel
+    {
+        public string Paciente { get; set; }
+        public string Lugar { get; set; }
+        public DateTime Fecha { get; set; }
+        public string Detalles { get; set; }
+        public string Descripcion { get; set; }
+        public string Resultado { get; set; }
+        public string Tratamiento { get; set; }
+    }
 }

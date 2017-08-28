@@ -15,7 +15,7 @@ namespace Optica_ASP.Models
         public string Apellido { get; set; }
         public string TipoDocumento { get; set; }
         public string Documento { get; set; }
-
+        public List<Historial> Historial { get; set; }
         [Column(TypeName = "Date")]
         public DateTime FechaNacimiento { get; set; }
         public string EntidadId { get; set; }
@@ -46,5 +46,30 @@ namespace Optica_ASP.Models
         public string Direccion { get; set; }
 
         public string Codigo { get; set; } = Guid.NewGuid().ToString();
+        public ICollection<Historial> Historial { get; set; }
+    }
+
+    [Table("AspNetHistorial")]
+    public class Historial
+    {
+        [Key]
+        public string Id { get; set; } = Guid.NewGuid().ToString();
+
+        [Column(TypeName = "Date")]
+        public DateTime Fecha { get; set; }
+        public string MedicoId { get; set; }
+        public string PacienteId { get; set; }
+        public ICollection<Registro> Registro { get; set; }
+    }
+
+    [Table("AspNetRegistro")]
+    public class Registro
+    {
+        [Key]
+        public string Id { get; set; } = Guid.NewGuid().ToString();
+        public string HistorialId { get; set; }
+        public string Descripcion { get; set; }
+        public string Resultado { get; set; }
+        public string Tratamiento { get; set; }
     }
 }

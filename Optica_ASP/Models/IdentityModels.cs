@@ -24,9 +24,9 @@ namespace Optica_ASP.Models
 
         public ApplicationUser()
         {
-            UserData = new List<UserData>();
+            UserData = new UserData();
         }
-        public virtual ICollection<UserData> UserData { get; set; }
+        public UserData UserData { get; set; }
     }    
     public class ApplicationRole : IdentityRole
     {
@@ -48,6 +48,8 @@ namespace Optica_ASP.Models
         public DbSet<UserData> UserData { get; set; }
         public DbSet<DocumentType> DocumentType { get; set; }
         public DbSet<Entity> Entity { get; set; }
+        public DbSet<Historial> Historial { get; set; }
+        public DbSet<Registro> Registro { get; set; }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -58,6 +60,9 @@ namespace Optica_ASP.Models
 
             var user = modelBuilder.Entity<ApplicationUser>();
             user.HasMany(x => x.UserData).WithRequired().HasForeignKey(x => x.UserId);
+
+            var historial = modelBuilder.Entity<Historial>();
+            historial.HasMany(x => x.Registro).WithRequired().HasForeignKey(x => x.HistorialId);
         }
     }
 }

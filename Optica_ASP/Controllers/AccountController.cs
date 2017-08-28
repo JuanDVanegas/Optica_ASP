@@ -131,16 +131,13 @@ namespace Optica_ASP.Controllers
                                     select entity;
                 if (codigoEntidad.First().Id != null)
                 {
-                    user.UserData.Add(new UserData
-                    {
-                        Nombre = model.Nombre,
-                        Apellido = model.Apellido,
-                        TipoDocumento = model.TipoDocumento,
-                        Documento = model.Documento,
-                        FechaNacimiento = model.FechaNacimiento,
-                        EntidadId = codigoEntidad.First().Id,
-                        UserId = user.Id
-                    });
+                    user.UserData.Nombre = model.Nombre;
+                    user.UserData.Apellido = model.Apellido;
+                    user.UserData.TipoDocumento = model.TipoDocumento;
+                    user.UserData.Documento = model.Documento;
+                    user.UserData.FechaNacimiento = model.FechaNacimiento;
+                    user.UserData.EntidadId = codigoEntidad.First().Id;
+                    user.UserData.UserId = user.Id;
                 }
                 else
                 {
