@@ -1,0 +1,724 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="DB_OptidcaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AspNetDocumentTypes">
+          <Key>
+            <PropertyRef Name="DocumentTypeId" />
+          </Key>
+          <Property Name="Nombre" Type="nvarchar" MaxLength="100" />
+          <Property Name="DocumentTypeId" Type="nvarchar" MaxLength="128" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AspNetEntitys">
+          <Key>
+            <PropertyRef Name="EntityId" />
+          </Key>
+          <Property Name="Nombre" Type="nvarchar" MaxLength="100" />
+          <Property Name="Direccion" Type="nvarchar" MaxLength="200" />
+          <Property Name="Codigo" Type="nvarchar(max)" />
+          <Property Name="EntityId" Type="nvarchar" MaxLength="128" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AspNetHistorial">
+          <Key>
+            <PropertyRef Name="HistorialId" />
+          </Key>
+          <Property Name="Fecha" Type="date" Nullable="false" />
+          <Property Name="HistorialId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Medico_Id" Type="nvarchar" MaxLength="128" />
+          <Property Name="Paciente_Id" Type="nvarchar" MaxLength="128" />
+          <Property Name="UserData_UserDataId" Type="nvarchar" MaxLength="128" />
+        </EntityType>
+        <EntityType Name="AspNetRegistro">
+          <Key>
+            <PropertyRef Name="RegistroId" />
+          </Key>
+          <Property Name="RegistroId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Descripcion" Type="nvarchar(max)" />
+          <Property Name="Resultado" Type="nvarchar(max)" />
+          <Property Name="Tratamiento" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="AspNetRoles">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="Discriminator" Type="nvarchar" MaxLength="128" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AspNetUserClaims">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="ClaimType" Type="nvarchar(max)" />
+          <Property Name="ClaimValue" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="AspNetUserData">
+          <Key>
+            <PropertyRef Name="UserDataId" />
+          </Key>
+          <Property Name="UserDataId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar(max)" />
+          <Property Name="Apellido" Type="nvarchar(max)" />
+          <Property Name="Documento" Type="nvarchar(max)" />
+          <Property Name="FechaNacimiento" Type="date" Nullable="false" />
+          <Property Name="TipoDocumento" Type="nvarchar(max)" />
+          <Property Name="Entidad_EntityId" Type="nvarchar" MaxLength="128" />
+        </EntityType>
+        <EntityType Name="AspNetUserLogins">
+          <Key>
+            <PropertyRef Name="LoginProvider" />
+            <PropertyRef Name="ProviderKey" />
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="LoginProvider" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="ProviderKey" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AspNetUserRoles">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="RoleId" Type="nvarchar" MaxLength="128" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AspNetUsers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="256" />
+          <Property Name="EmailConfirmed" Type="bit" Nullable="false" />
+          <Property Name="PasswordHash" Type="nvarchar(max)" />
+          <Property Name="SecurityStamp" Type="nvarchar(max)" />
+          <Property Name="PhoneNumber" Type="nvarchar(max)" />
+          <Property Name="PhoneNumberConfirmed" Type="bit" Nullable="false" />
+          <Property Name="TwoFactorEnabled" Type="bit" Nullable="false" />
+          <Property Name="LockoutEndDateUtc" Type="datetime" />
+          <Property Name="LockoutEnabled" Type="bit" Nullable="false" />
+          <Property Name="AccessFailedCount" Type="int" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="Entity_EntityId" Type="nvarchar" MaxLength="128" />
+        </EntityType>
+        <Association Name="FK_dbo_AspNetHistorial_dbo_AspNetUserData_UserData_UserDataId">
+          <End Role="AspNetUserData" Type="Self.AspNetUserData" Multiplicity="0..1" />
+          <End Role="AspNetHistorial" Type="Self.AspNetHistorial" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUserData">
+              <PropertyRef Name="UserDataId" />
+            </Principal>
+            <Dependent Role="AspNetHistorial">
+              <PropertyRef Name="UserData_UserDataId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetHistorial_dbo_AspNetUsers_Medico_Id">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
+          <End Role="AspNetHistorial" Type="Self.AspNetHistorial" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetHistorial">
+              <PropertyRef Name="Medico_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetHistorial_dbo_AspNetUsers_Paciente_Id">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
+          <End Role="AspNetHistorial" Type="Self.AspNetHistorial" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetHistorial">
+              <PropertyRef Name="Paciente_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetRegistro_dbo_AspNetHistorial_RegistroId">
+          <End Role="AspNetHistorial" Type="Self.AspNetHistorial" Multiplicity="1" />
+          <End Role="AspNetRegistro" Type="Self.AspNetRegistro" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetHistorial">
+              <PropertyRef Name="HistorialId" />
+            </Principal>
+            <Dependent Role="AspNetRegistro">
+              <PropertyRef Name="RegistroId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserClaims" Type="Self.AspNetUserClaims" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserClaims">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserData_dbo_AspNetEntitys_Entidad_EntityId">
+          <End Role="AspNetEntitys" Type="Self.AspNetEntitys" Multiplicity="0..1" />
+          <End Role="AspNetUserData" Type="Self.AspNetUserData" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetEntitys">
+              <PropertyRef Name="EntityId" />
+            </Principal>
+            <Dependent Role="AspNetUserData">
+              <PropertyRef Name="Entidad_EntityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserData_dbo_AspNetUsers_UserDataId">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+          <End Role="AspNetUserData" Type="Self.AspNetUserData" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserData">
+              <PropertyRef Name="UserDataId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserLogins" Type="Self.AspNetUserLogins" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserLogins">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId">
+          <End Role="AspNetRoles" Type="Self.AspNetRoles" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserRoles" Type="Self.AspNetUserRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetRoles">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserRoles">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserRoles" Type="Self.AspNetUserRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserRoles">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUsers_dbo_AspNetEntitys_Entity_EntityId">
+          <End Role="AspNetEntitys" Type="Self.AspNetEntitys" Multiplicity="0..1" />
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetEntitys">
+              <PropertyRef Name="EntityId" />
+            </Principal>
+            <Dependent Role="AspNetUsers">
+              <PropertyRef Name="Entity_EntityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DB_OptidcaModelStoreContainer">
+          <EntitySet Name="AspNetDocumentTypes" EntityType="Self.AspNetDocumentTypes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetEntitys" EntityType="Self.AspNetEntitys" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetHistorial" EntityType="Self.AspNetHistorial" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetRegistro" EntityType="Self.AspNetRegistro" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaims" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetUserData" EntityType="Self.AspNetUserData" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogins" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetUserRoles" EntityType="Self.AspNetUserRoles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_dbo_AspNetHistorial_dbo_AspNetUserData_UserData_UserDataId" Association="Self.FK_dbo_AspNetHistorial_dbo_AspNetUserData_UserData_UserDataId">
+            <End Role="AspNetUserData" EntitySet="AspNetUserData" />
+            <End Role="AspNetHistorial" EntitySet="AspNetHistorial" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetHistorial_dbo_AspNetUsers_Medico_Id" Association="Self.FK_dbo_AspNetHistorial_dbo_AspNetUsers_Medico_Id">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetHistorial" EntitySet="AspNetHistorial" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetHistorial_dbo_AspNetUsers_Paciente_Id" Association="Self.FK_dbo_AspNetHistorial_dbo_AspNetUsers_Paciente_Id">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetHistorial" EntitySet="AspNetHistorial" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetRegistro_dbo_AspNetHistorial_RegistroId" Association="Self.FK_dbo_AspNetRegistro_dbo_AspNetHistorial_RegistroId">
+            <End Role="AspNetHistorial" EntitySet="AspNetHistorial" />
+            <End Role="AspNetRegistro" EntitySet="AspNetRegistro" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserData_dbo_AspNetEntitys_Entidad_EntityId" Association="Self.FK_dbo_AspNetUserData_dbo_AspNetEntitys_Entidad_EntityId">
+            <End Role="AspNetEntitys" EntitySet="AspNetEntitys" />
+            <End Role="AspNetUserData" EntitySet="AspNetUserData" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserData_dbo_AspNetUsers_UserDataId" Association="Self.FK_dbo_AspNetUserData_dbo_AspNetUsers_UserDataId">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserData" EntitySet="AspNetUserData" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserLogins" EntitySet="AspNetUserLogins" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId" Association="Self.FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId">
+            <End Role="AspNetRoles" EntitySet="AspNetRoles" />
+            <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUsers_dbo_AspNetEntitys_Entity_EntityId" Association="Self.FK_dbo_AspNetUsers_dbo_AspNetEntitys_Entity_EntityId">
+            <End Role="AspNetEntitys" EntitySet="AspNetEntitys" />
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DB_OptidcaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="AspNetDocumentTypes">
+          <Key>
+            <PropertyRef Name="DocumentTypeId" />
+          </Key>
+          <Property Name="Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="DocumentTypeId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AspNetEntitys">
+          <Key>
+            <PropertyRef Name="EntityId" />
+          </Key>
+          <Property Name="Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Direccion" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Codigo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="EntityId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="AspNetUserData" Relationship="Self.FK_dbo_AspNetUserData_dbo_AspNetEntitys_Entidad_EntityId" FromRole="AspNetEntitys" ToRole="AspNetUserData" />
+          <NavigationProperty Name="AspNetUsers" Relationship="Self.FK_dbo_AspNetUsers_dbo_AspNetEntitys_Entity_EntityId" FromRole="AspNetEntitys" ToRole="AspNetUsers" />
+        </EntityType>
+        <EntityType Name="AspNetHistorial">
+          <Key>
+            <PropertyRef Name="HistorialId" />
+          </Key>
+          <Property Name="Fecha" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="HistorialId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Medico_Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Paciente_Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="UserData_UserDataId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUserData" Relationship="Self.FK_dbo_AspNetHistorial_dbo_AspNetUserData_UserData_UserDataId" FromRole="AspNetHistorial" ToRole="AspNetUserData" />
+          <NavigationProperty Name="AspNetUsers" Relationship="Self.FK_dbo_AspNetHistorial_dbo_AspNetUsers_Medico_Id" FromRole="AspNetHistorial" ToRole="AspNetUsers" />
+          <NavigationProperty Name="AspNetUsers1" Relationship="Self.FK_dbo_AspNetHistorial_dbo_AspNetUsers_Paciente_Id" FromRole="AspNetHistorial" ToRole="AspNetUsers" />
+          <NavigationProperty Name="AspNetRegistro" Relationship="Self.FK_dbo_AspNetRegistro_dbo_AspNetHistorial_RegistroId" FromRole="AspNetHistorial" ToRole="AspNetRegistro" />
+        </EntityType>
+        <EntityType Name="AspNetRegistro">
+          <Key>
+            <PropertyRef Name="RegistroId" />
+          </Key>
+          <Property Name="RegistroId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Resultado" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Tratamiento" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetHistorial" Relationship="Self.FK_dbo_AspNetRegistro_dbo_AspNetHistorial_RegistroId" FromRole="AspNetRegistro" ToRole="AspNetHistorial" />
+        </EntityType>
+        <EntityType Name="AspNetRoles">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Discriminator" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="AspNetUsers" Relationship="Self.AspNetUserRoles" FromRole="AspNetRoles" ToRole="AspNetUsers" />
+        </EntityType>
+        <EntityType Name="AspNetUserClaims">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ClaimType" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ClaimValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUsers" Relationship="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUserClaims" ToRole="AspNetUsers" />
+        </EntityType>
+        <EntityType Name="AspNetUserData">
+          <Key>
+            <PropertyRef Name="UserDataId" />
+          </Key>
+          <Property Name="UserDataId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Nombre" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Apellido" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Documento" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="FechaNacimiento" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="TipoDocumento" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Entidad_EntityId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetEntitys" Relationship="Self.FK_dbo_AspNetUserData_dbo_AspNetEntitys_Entidad_EntityId" FromRole="AspNetUserData" ToRole="AspNetEntitys" />
+          <NavigationProperty Name="AspNetHistorial" Relationship="Self.FK_dbo_AspNetHistorial_dbo_AspNetUserData_UserData_UserDataId" FromRole="AspNetUserData" ToRole="AspNetHistorial" />
+          <NavigationProperty Name="AspNetUsers" Relationship="Self.FK_dbo_AspNetUserData_dbo_AspNetUsers_UserDataId" FromRole="AspNetUserData" ToRole="AspNetUsers" />
+        </EntityType>
+        <EntityType Name="AspNetUserLogins">
+          <Key>
+            <PropertyRef Name="LoginProvider" />
+            <PropertyRef Name="ProviderKey" />
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="LoginProvider" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ProviderKey" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="AspNetUsers" Relationship="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUserLogins" ToRole="AspNetUsers" />
+        </EntityType>
+        <EntityType Name="AspNetUsers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="EmailConfirmed" Type="Boolean" Nullable="false" />
+          <Property Name="PasswordHash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SecurityStamp" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumberConfirmed" Type="Boolean" Nullable="false" />
+          <Property Name="TwoFactorEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="LockoutEndDateUtc" Type="DateTime" Precision="3" />
+          <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
+          <Property Name="UserName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Entity_EntityId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetEntitys" Relationship="Self.FK_dbo_AspNetUsers_dbo_AspNetEntitys_Entity_EntityId" FromRole="AspNetUsers" ToRole="AspNetEntitys" />
+          <NavigationProperty Name="AspNetHistorial" Relationship="Self.FK_dbo_AspNetHistorial_dbo_AspNetUsers_Medico_Id" FromRole="AspNetUsers" ToRole="AspNetHistorial" />
+          <NavigationProperty Name="AspNetHistorial1" Relationship="Self.FK_dbo_AspNetHistorial_dbo_AspNetUsers_Paciente_Id" FromRole="AspNetUsers" ToRole="AspNetHistorial" />
+          <NavigationProperty Name="AspNetUserClaims" Relationship="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserClaims" />
+          <NavigationProperty Name="AspNetUserData" Relationship="Self.FK_dbo_AspNetUserData_dbo_AspNetUsers_UserDataId" FromRole="AspNetUsers" ToRole="AspNetUserData" />
+          <NavigationProperty Name="AspNetUserLogins" Relationship="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserLogins" />
+          <NavigationProperty Name="AspNetRoles" Relationship="Self.AspNetUserRoles" FromRole="AspNetUsers" ToRole="AspNetRoles" />
+        </EntityType>
+        <Association Name="FK_dbo_AspNetUserData_dbo_AspNetEntitys_Entidad_EntityId">
+          <End Role="AspNetEntitys" Type="Self.AspNetEntitys" Multiplicity="0..1" />
+          <End Role="AspNetUserData" Type="Self.AspNetUserData" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetEntitys">
+              <PropertyRef Name="EntityId" />
+            </Principal>
+            <Dependent Role="AspNetUserData">
+              <PropertyRef Name="Entidad_EntityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUsers_dbo_AspNetEntitys_Entity_EntityId">
+          <End Role="AspNetEntitys" Type="Self.AspNetEntitys" Multiplicity="0..1" />
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetEntitys">
+              <PropertyRef Name="EntityId" />
+            </Principal>
+            <Dependent Role="AspNetUsers">
+              <PropertyRef Name="Entity_EntityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetHistorial_dbo_AspNetUserData_UserData_UserDataId">
+          <End Role="AspNetUserData" Type="Self.AspNetUserData" Multiplicity="0..1" />
+          <End Role="AspNetHistorial" Type="Self.AspNetHistorial" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUserData">
+              <PropertyRef Name="UserDataId" />
+            </Principal>
+            <Dependent Role="AspNetHistorial">
+              <PropertyRef Name="UserData_UserDataId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetHistorial_dbo_AspNetUsers_Medico_Id">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
+          <End Role="AspNetHistorial" Type="Self.AspNetHistorial" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetHistorial">
+              <PropertyRef Name="Medico_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetHistorial_dbo_AspNetUsers_Paciente_Id">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
+          <End Role="AspNetHistorial" Type="Self.AspNetHistorial" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetHistorial">
+              <PropertyRef Name="Paciente_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetRegistro_dbo_AspNetHistorial_RegistroId">
+          <End Role="AspNetHistorial" Type="Self.AspNetHistorial" Multiplicity="1" />
+          <End Role="AspNetRegistro" Type="Self.AspNetRegistro" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetHistorial">
+              <PropertyRef Name="HistorialId" />
+            </Principal>
+            <Dependent Role="AspNetRegistro">
+              <PropertyRef Name="RegistroId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserClaims" Type="Self.AspNetUserClaims" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserClaims">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserData_dbo_AspNetUsers_UserDataId">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+          <End Role="AspNetUserData" Type="Self.AspNetUserData" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserData">
+              <PropertyRef Name="UserDataId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserLogins" Type="Self.AspNetUserLogins" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserLogins">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="AspNetUserRoles">
+          <End Role="AspNetRoles" Type="Self.AspNetRoles" Multiplicity="*" />
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="DB_OptidcaEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="AspNetDocumentTypes" EntityType="Self.AspNetDocumentTypes" />
+          <EntitySet Name="AspNetEntitys" EntityType="Self.AspNetEntitys" />
+          <EntitySet Name="AspNetHistorial" EntityType="Self.AspNetHistorial" />
+          <EntitySet Name="AspNetRegistro" EntityType="Self.AspNetRegistro" />
+          <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" />
+          <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaims" />
+          <EntitySet Name="AspNetUserData" EntityType="Self.AspNetUserData" />
+          <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogins" />
+          <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" />
+          <AssociationSet Name="FK_dbo_AspNetUserData_dbo_AspNetEntitys_Entidad_EntityId" Association="Self.FK_dbo_AspNetUserData_dbo_AspNetEntitys_Entidad_EntityId">
+            <End Role="AspNetEntitys" EntitySet="AspNetEntitys" />
+            <End Role="AspNetUserData" EntitySet="AspNetUserData" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUsers_dbo_AspNetEntitys_Entity_EntityId" Association="Self.FK_dbo_AspNetUsers_dbo_AspNetEntitys_Entity_EntityId">
+            <End Role="AspNetEntitys" EntitySet="AspNetEntitys" />
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetHistorial_dbo_AspNetUserData_UserData_UserDataId" Association="Self.FK_dbo_AspNetHistorial_dbo_AspNetUserData_UserData_UserDataId">
+            <End Role="AspNetUserData" EntitySet="AspNetUserData" />
+            <End Role="AspNetHistorial" EntitySet="AspNetHistorial" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetHistorial_dbo_AspNetUsers_Medico_Id" Association="Self.FK_dbo_AspNetHistorial_dbo_AspNetUsers_Medico_Id">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetHistorial" EntitySet="AspNetHistorial" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetHistorial_dbo_AspNetUsers_Paciente_Id" Association="Self.FK_dbo_AspNetHistorial_dbo_AspNetUsers_Paciente_Id">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetHistorial" EntitySet="AspNetHistorial" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetRegistro_dbo_AspNetHistorial_RegistroId" Association="Self.FK_dbo_AspNetRegistro_dbo_AspNetHistorial_RegistroId">
+            <End Role="AspNetHistorial" EntitySet="AspNetHistorial" />
+            <End Role="AspNetRegistro" EntitySet="AspNetRegistro" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserData_dbo_AspNetUsers_UserDataId" Association="Self.FK_dbo_AspNetUserData_dbo_AspNetUsers_UserDataId">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserData" EntitySet="AspNetUserData" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserLogins" EntitySet="AspNetUserLogins" />
+          </AssociationSet>
+          <AssociationSet Name="AspNetUserRoles" Association="Self.AspNetUserRoles">
+            <End Role="AspNetRoles" EntitySet="AspNetRoles" />
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DB_OptidcaModelStoreContainer" CdmEntityContainer="DB_OptidcaEntities">
+          <EntitySetMapping Name="AspNetDocumentTypes">
+            <EntityTypeMapping TypeName="DB_OptidcaModel.AspNetDocumentTypes">
+              <MappingFragment StoreEntitySet="AspNetDocumentTypes">
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="DocumentTypeId" ColumnName="DocumentTypeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AspNetEntitys">
+            <EntityTypeMapping TypeName="DB_OptidcaModel.AspNetEntitys">
+              <MappingFragment StoreEntitySet="AspNetEntitys">
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Direccion" ColumnName="Direccion" />
+                <ScalarProperty Name="Codigo" ColumnName="Codigo" />
+                <ScalarProperty Name="EntityId" ColumnName="EntityId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AspNetHistorial">
+            <EntityTypeMapping TypeName="DB_OptidcaModel.AspNetHistorial">
+              <MappingFragment StoreEntitySet="AspNetHistorial">
+                <ScalarProperty Name="Fecha" ColumnName="Fecha" />
+                <ScalarProperty Name="HistorialId" ColumnName="HistorialId" />
+                <ScalarProperty Name="Medico_Id" ColumnName="Medico_Id" />
+                <ScalarProperty Name="Paciente_Id" ColumnName="Paciente_Id" />
+                <ScalarProperty Name="UserData_UserDataId" ColumnName="UserData_UserDataId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AspNetRegistro">
+            <EntityTypeMapping TypeName="DB_OptidcaModel.AspNetRegistro">
+              <MappingFragment StoreEntitySet="AspNetRegistro">
+                <ScalarProperty Name="RegistroId" ColumnName="RegistroId" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Resultado" ColumnName="Resultado" />
+                <ScalarProperty Name="Tratamiento" ColumnName="Tratamiento" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AspNetRoles">
+            <EntityTypeMapping TypeName="DB_OptidcaModel.AspNetRoles">
+              <MappingFragment StoreEntitySet="AspNetRoles">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Discriminator" ColumnName="Discriminator" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AspNetUserClaims">
+            <EntityTypeMapping TypeName="DB_OptidcaModel.AspNetUserClaims">
+              <MappingFragment StoreEntitySet="AspNetUserClaims">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ClaimType" ColumnName="ClaimType" />
+                <ScalarProperty Name="ClaimValue" ColumnName="ClaimValue" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AspNetUserData">
+            <EntityTypeMapping TypeName="DB_OptidcaModel.AspNetUserData">
+              <MappingFragment StoreEntitySet="AspNetUserData">
+                <ScalarProperty Name="UserDataId" ColumnName="UserDataId" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Apellido" ColumnName="Apellido" />
+                <ScalarProperty Name="Documento" ColumnName="Documento" />
+                <ScalarProperty Name="FechaNacimiento" ColumnName="FechaNacimiento" />
+                <ScalarProperty Name="TipoDocumento" ColumnName="TipoDocumento" />
+                <ScalarProperty Name="Entidad_EntityId" ColumnName="Entidad_EntityId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AspNetUserLogins">
+            <EntityTypeMapping TypeName="DB_OptidcaModel.AspNetUserLogins">
+              <MappingFragment StoreEntitySet="AspNetUserLogins">
+                <ScalarProperty Name="LoginProvider" ColumnName="LoginProvider" />
+                <ScalarProperty Name="ProviderKey" ColumnName="ProviderKey" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AspNetUsers">
+            <EntityTypeMapping TypeName="DB_OptidcaModel.AspNetUsers">
+              <MappingFragment StoreEntitySet="AspNetUsers">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
+                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+                <ScalarProperty Name="SecurityStamp" ColumnName="SecurityStamp" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="PhoneNumberConfirmed" ColumnName="PhoneNumberConfirmed" />
+                <ScalarProperty Name="TwoFactorEnabled" ColumnName="TwoFactorEnabled" />
+                <ScalarProperty Name="LockoutEndDateUtc" ColumnName="LockoutEndDateUtc" />
+                <ScalarProperty Name="LockoutEnabled" ColumnName="LockoutEnabled" />
+                <ScalarProperty Name="AccessFailedCount" ColumnName="AccessFailedCount" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Entity_EntityId" ColumnName="Entity_EntityId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="AspNetUserRoles" TypeName="DB_OptidcaModel.AspNetUserRoles" StoreEntitySet="AspNetUserRoles">
+            <EndProperty Name="AspNetRoles">
+              <ScalarProperty Name="Id" ColumnName="RoleId" />
+            </EndProperty>
+            <EndProperty Name="AspNetUsers">
+              <ScalarProperty Name="Id" ColumnName="UserId" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -10,14 +10,15 @@ namespace Optica_ASP.Models
     [Table("AspNetUserData")]
     public class UserData
     {
-        public string UserId { get; set; }
+        [ForeignKey("User")]
+        public string UserDataId { get; set; }
         public string Nombre { get; set; }
         public string Apellido { get; set; }
         public string TipoDocumento { get; set; }
         public string Documento { get; set; }
         [Column(TypeName = "Date")]
         public DateTime FechaNacimiento { get; set; }
-        public ApplicationUser User { get; set; }
+        public virtual ApplicationUser User { get; set; }
         public virtual ICollection<Historial> Historial { get; set; }
         public virtual Entity Entidad { get; set; }
         public UserData()
@@ -30,7 +31,7 @@ namespace Optica_ASP.Models
     public class DocumentType
     {
         [Key]
-        public string Id { get; set; } = Guid.NewGuid().ToString();
+        public string DocumentTypeId { get; set; } = Guid.NewGuid().ToString();
         [StringLength(100)]
         public string Nombre { get; set; }
 
@@ -40,7 +41,7 @@ namespace Optica_ASP.Models
     public class Entity
     {
         [Key]
-        public string Id { get; set; } = Guid.NewGuid().ToString();
+        public string EntityId { get; set; } = Guid.NewGuid().ToString();
         [StringLength(100)]
         public string Nombre { get; set; }
         [StringLength(200)]
@@ -57,7 +58,7 @@ namespace Optica_ASP.Models
     public class Historial
     {
         [Key]
-        public string Id { get; set; } = Guid.NewGuid().ToString();
+        public string HistorialId { get; set; } = Guid.NewGuid().ToString();
         [Column(TypeName = "Date")]
         public DateTime Fecha { get; set; }
         public virtual ApplicationUser Medico { get; set; }
@@ -68,8 +69,8 @@ namespace Optica_ASP.Models
     [Table("AspNetRegistro")]
     public class Registro
     {
-        [Key]
-        public string HistorialId { get; set; } = Guid.NewGuid().ToString();
+        [ForeignKey("Historial")]
+        public string RegistroId { get; set; } = Guid.NewGuid().ToString();
         public string Descripcion { get; set; }
         public string Resultado { get; set; }
         public string Tratamiento { get; set; }

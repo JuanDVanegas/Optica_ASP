@@ -202,6 +202,33 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="AspNetDocumentTypes.cs">
+      <DependentUpon>EntityModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AspNetEntitys.cs">
+      <DependentUpon>EntityModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AspNetHistorial.cs">
+      <DependentUpon>EntityModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AspNetRegistro.cs">
+      <DependentUpon>EntityModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AspNetRoles.cs">
+      <DependentUpon>EntityModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AspNetUserClaims.cs">
+      <DependentUpon>EntityModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AspNetUserData.cs">
+      <DependentUpon>EntityModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AspNetUserLogins.cs">
+      <DependentUpon>EntityModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AspNetUsers.cs">
+      <DependentUpon>EntityModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="AunteticateAuthorize.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\DocumentTypeController.cs" />
@@ -210,6 +237,21 @@
     <Compile Include="Controllers\ManageAccountController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
+    <Compile Include="EntityModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EntityModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EntityModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EntityModel.edmx</DependentUpon>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -257,9 +299,9 @@
     <Compile Include="Migrations\201708281942030_historial2.Designer.cs">
       <DependentUpon>201708281942030_historial2.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201708291605367_foreignkeys.cs" />
-    <Compile Include="Migrations\201708291605367_foreignkeys.Designer.cs">
-      <DependentUpon>201708291605367_foreignkeys.cs</DependentUpon>
+    <Compile Include="Migrations\201708291953547_foreignkeys.cs" />
+    <Compile Include="Migrations\201708291953547_foreignkeys.Designer.cs">
+      <DependentUpon>201708291953547_foreignkeys.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -275,6 +317,16 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\overwrite.css" />
     <Content Include="Content\site.css" />
+    <Content Include="EntityModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>EntityModel.edmx</DependentUpon>
+      <LastGenOutput>EntityModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="EntityModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>EntityModel.edmx</DependentUpon>
+      <LastGenOutput>EntityModel.cs</LastGenOutput>
+    </Content>
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -289,6 +341,13 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <EntityDeploy Include="EntityModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>EntityModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="EntityModel.edmx.diagram">
+      <DependentUpon>EntityModel.edmx</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -342,17 +401,17 @@
     <Content Include="Views\ManageAccount\_UserPartial.cshtml" />
     <Content Include="Views\ManageAccount\_MenuPartial.cshtml" />
     <Content Include="Views\Role\Delete.cshtml" />
-    <Content Include="Views\Entity\Create.cshtml" />
-    <Content Include="Views\Entity\Delete.cshtml" />
-    <Content Include="Views\Entity\Details.cshtml" />
-    <Content Include="Views\Entity\Edit.cshtml" />
-    <Content Include="Views\Entity\Index.cshtml" />
+    <Content Include="Views\ManageAccount\_LayoutAccount.cshtml" />
     <Content Include="Views\DocumentType\Create.cshtml" />
     <Content Include="Views\DocumentType\Delete.cshtml" />
     <Content Include="Views\DocumentType\Details.cshtml" />
     <Content Include="Views\DocumentType\Edit.cshtml" />
     <Content Include="Views\DocumentType\Index.cshtml" />
-    <Content Include="Views\ManageAccount\_LayoutAccount.cshtml" />
+    <Content Include="Views\Entity\Create.cshtml" />
+    <Content Include="Views\Entity\Delete.cshtml" />
+    <Content Include="Views\Entity\Details.cshtml" />
+    <Content Include="Views\Entity\Edit.cshtml" />
+    <Content Include="Views\Entity\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -399,8 +458,8 @@
     <EmbeddedResource Include="Migrations\201708281942030_historial2.resx">
       <DependentUpon>201708281942030_historial2.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201708291605367_foreignkeys.resx">
-      <DependentUpon>201708291605367_foreignkeys.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201708291953547_foreignkeys.resx">
+      <DependentUpon>201708291953547_foreignkeys.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

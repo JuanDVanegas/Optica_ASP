@@ -2,7 +2,7 @@
 
 @{
     Layout = "../ManageAccount/_LayoutAccount.cshtml";
-    ViewBag.Title = "DocumentType";
+    ViewBag.Title = "Document Types";
 }
 
 <h2>@ViewBag.Title</h2>
@@ -24,9 +24,9 @@
             @Html.DisplayFor(modelItem => item.Nombre)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            @Html.ActionLink("Edit", "Edit", new { id=item.DocumentTypeId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.DocumentTypeId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.DocumentTypeId })
         </td>
     </tr>
 }

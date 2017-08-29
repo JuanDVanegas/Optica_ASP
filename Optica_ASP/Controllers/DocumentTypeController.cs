@@ -10,18 +10,17 @@ using Optica_ASP.Models;
 
 namespace Optica_ASP.Controllers
 {
-    [Authorize(Roles = "Admin")]
     public class DocumentTypeController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: DocumentType
+        // GET: DocumentTypes
         public ActionResult Index()
         {
             return View(db.DocumentType.ToList());
         }
 
-        // GET: DocumentType/Details/5
+        // GET: DocumentTypes/Details/5
         public ActionResult Details(string id)
         {
             if (id == null)
@@ -36,18 +35,18 @@ namespace Optica_ASP.Controllers
             return View(documentType);
         }
 
-        // GET: DocumentType/Create
+        // GET: DocumentTypes/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: DocumentType/Create
+        // POST: DocumentTypes/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Nombre")] DocumentType documentType)
+        public ActionResult Create([Bind(Include = "DocumentTypeId,Nombre")] DocumentType documentType)
         {
             if (ModelState.IsValid)
             {
@@ -59,7 +58,7 @@ namespace Optica_ASP.Controllers
             return View(documentType);
         }
 
-        // GET: DocumentType/Edit/5
+        // GET: DocumentTypes/Edit/5
         public ActionResult Edit(string id)
         {
             if (id == null)
@@ -74,12 +73,12 @@ namespace Optica_ASP.Controllers
             return View(documentType);
         }
 
-        // POST: DocumentType/Edit/5
+        // POST: DocumentTypes/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Nombre")] DocumentType documentType)
+        public ActionResult Edit([Bind(Include = "DocumentTypeId,Nombre")] DocumentType documentType)
         {
             if (ModelState.IsValid)
             {
@@ -90,7 +89,7 @@ namespace Optica_ASP.Controllers
             return View(documentType);
         }
 
-        // GET: DocumentType/Delete/5
+        // GET: DocumentTypes/Delete/5
         public ActionResult Delete(string id)
         {
             if (id == null)
@@ -105,7 +104,7 @@ namespace Optica_ASP.Controllers
             return View(documentType);
         }
 
-        // POST: DocumentType/Delete/5
+        // POST: DocumentTypes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(string id)

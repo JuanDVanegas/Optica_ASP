@@ -21,12 +21,7 @@ namespace Optica_ASP.Models
             // Agregar aquí notificaciones personalizadas de usuario
             return userIdentity;
         }
-
-        public ApplicationUser()
-        {
-            UserData = new UserData();
-        }
-        public UserData UserData { get; set; }
+        public virtual UserData UserData { get; set; }
     }    
     public class ApplicationRole : IdentityRole
     {
@@ -50,21 +45,21 @@ namespace Optica_ASP.Models
         public DbSet<Entity> Entity { get; set; }
         public DbSet<Historial> Historial { get; set; }
         public DbSet<Registro> Registro { get; set; }
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
+        //protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        //{
+        //    base.OnModelCreating(modelBuilder);
 
-            var userData = modelBuilder.Entity<UserData>();
-            userData.HasKey(x => x.UserId);
+        //    var userData = modelBuilder.Entity<UserData>();
+        //    userData.HasKey(x => x.UserId);
 
-            var user = modelBuilder.Entity<ApplicationUser>();
-            user.HasRequired(x => x.UserData).WithRequiredPrincipal(x => x.User);
+        //    var user = modelBuilder.Entity<ApplicationUser>();
+        //    user.HasRequired(x => x.UserData).WithRequiredPrincipal(x => x.User);
 
-            var registro = modelBuilder.Entity<Registro>();
-            registro.HasKey(x => x.HistorialId);
+        //    var registro = modelBuilder.Entity<Registro>();
+        //    registro.HasKey(x => x.HistorialId);
 
-            var historial = modelBuilder.Entity<Historial>();
-            historial.HasRequired(x => x.Registro).WithRequiredPrincipal(x => x.Historial);
-        }
+        //    var historial = modelBuilder.Entity<Historial>();
+        //    historial.HasRequired(x => x.Registro).WithRequiredPrincipal(x => x.Historial);
+        //}
     }
 }

@@ -91,10 +91,10 @@ namespace Optica_ASP.Controllers
         {
             List<SelectListItem> list = new List<SelectListItem>();
             foreach (var role in RoleManager.Roles)
-                if (role.Name != "Admin")
-                {
+                //if (role.Name != "Admin")
+                //{
                     list.Add(new SelectListItem { Value = role.Name, Text = role.Name });
-                }
+                //}
             ViewBag.Roles = list;
 
             List<SelectListItem> dType = new List<SelectListItem>();
@@ -129,15 +129,18 @@ namespace Optica_ASP.Controllers
                 var codigoEntidad = from entity in db.Entity
                                     where entity.Nombre == model.NombreEntidad && entity.Codigo == model.CodigoEntidad
                                     select entity;
-                if (codigoEntidad.First().Id != null)
+                if (codigoEntidad.First().EntityId != null)
                 {
-                    user.UserData.Nombre = model.Nombre;
-                    user.UserData.Apellido = model.Apellido;
-                    user.UserData.TipoDocumento = model.TipoDocumento;
-                    user.UserData.Documento = model.Documento;
-                    user.UserData.FechaNacimiento = model.FechaNacimiento;
-                    user.UserData.Entidad = codigoEntidad.First();
-                    user.UserData.User = user;
+                    user.UserData = new UserData
+                    {
+                        Nombre = model.Nombre,
+                        Apellido = model.Apellido,
+                        TipoDocumento = model.TipoDocumento,
+                        Documento = model.Documento,
+                        FechaNacimiento = model.FechaNacimiento,
+                        Entidad = codigoEntidad.First(),
+                        User = user
+                    };
                 }
                 else
                 {
@@ -147,13 +150,16 @@ namespace Optica_ASP.Controllers
             }
             else
             {
-                user.UserData.Nombre = model.Nombre;
-                user.UserData.Apellido = model.Apellido;
-                user.UserData.TipoDocumento = model.TipoDocumento;
-                user.UserData.Documento = model.Documento;
-                user.UserData.FechaNacimiento = model.FechaNacimiento;
-                user.UserData.Entidad = null;
-                user.UserData.User = user;
+                user.UserData = new UserData
+                {
+                    Nombre = model.Nombre,
+                    Apellido = model.Apellido,
+                    TipoDocumento = model.TipoDocumento,
+                    Documento = model.Documento,
+                    FechaNacimiento = model.FechaNacimiento,
+                    Entidad = null,
+                    User = user
+                };
             }
             
             var result = await UserManager.CreateAsync(user, model.Password);
