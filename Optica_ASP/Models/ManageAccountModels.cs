@@ -18,11 +18,11 @@ namespace Optica_ASP.Models
         public UpdateViewModel(ApplicationUser user, string roleName)
         {
             RoleName = roleName;
-            Nombre = user.UserData.First().Nombre;
-            Apellido = user.UserData.First().Apellido;
-            TipoDocumento = user.UserData.First().TipoDocumento;
-            Documento = user.UserData.First().Documento;
-            FechaNacimiento = user.UserData.First().FechaNacimiento;
+            Nombre = user.UserData.Nombre;
+            Apellido = user.UserData.Apellido;
+            TipoDocumento = user.UserData.TipoDocumento;
+            Documento = user.UserData.Documento;
+            FechaNacimiento = user.UserData.FechaNacimiento;
             Email = user.Email;
         }
 

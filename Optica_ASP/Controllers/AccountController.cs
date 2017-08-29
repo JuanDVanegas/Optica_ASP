@@ -136,8 +136,8 @@ namespace Optica_ASP.Controllers
                     user.UserData.TipoDocumento = model.TipoDocumento;
                     user.UserData.Documento = model.Documento;
                     user.UserData.FechaNacimiento = model.FechaNacimiento;
-                    user.UserData.EntidadId = codigoEntidad.First().Id;
-                    user.UserData.UserId = user.Id;
+                    user.UserData.Entidad = codigoEntidad.First();
+                    user.UserData.User = user;
                 }
                 else
                 {
@@ -147,16 +147,13 @@ namespace Optica_ASP.Controllers
             }
             else
             {
-                user.UserData.Add(new UserData
-                {
-                    Nombre = model.Nombre,
-                    Apellido = model.Apellido,
-                    TipoDocumento = model.TipoDocumento,
-                    Documento = model.Documento,
-                    FechaNacimiento = model.FechaNacimiento,
-                    EntidadId = null,
-                    UserId = user.Id
-                });
+                user.UserData.Nombre = model.Nombre;
+                user.UserData.Apellido = model.Apellido;
+                user.UserData.TipoDocumento = model.TipoDocumento;
+                user.UserData.Documento = model.Documento;
+                user.UserData.FechaNacimiento = model.FechaNacimiento;
+                user.UserData.Entidad = null;
+                user.UserData.User = user;
             }
             
             var result = await UserManager.CreateAsync(user, model.Password);

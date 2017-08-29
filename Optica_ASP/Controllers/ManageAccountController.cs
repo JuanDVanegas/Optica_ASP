@@ -66,7 +66,7 @@ namespace Optica_ASP.Controllers
             dType.Add(new SelectListItem { Value = "Tarjeta de Identidad", Text = "Tarjeta de Identidad" });
             ViewBag.DTypes = dType;
 
-            ViewBag.UserName = user.UserData.First().Nombre;
+            ViewBag.UserName = user.UserData.Nombre;
             ViewBag.Entidad = "ABC Opticas";
 
             return View(model);

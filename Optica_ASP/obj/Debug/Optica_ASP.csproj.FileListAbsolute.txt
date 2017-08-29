@@ -335,3 +335,6 @@ C:\Users\Juan David\Documents\GitHub\Optica_ASP\Optica_ASP\obj\Debug\Optica_ASP.
 C:\Users\Juan David\Documents\GitHub\Optica_ASP\Optica_ASP\obj\Debug\Optica_ASP.Migrations.cambioUserdata.resources
 C:\Users\SOPORTE\Documents\Visual Studio 2015\Projects\Optica_ASP\Optica_ASP\obj\Debug\Optica_ASP.Migrations.historial.resources
 C:\Users\SOPORTE\Documents\Visual Studio 2015\Projects\Optica_ASP\Optica_ASP\obj\Debug\Optica_ASP.Migrations.historial2.resources
+C:\Users\Juan David\Documents\GitHub\Optica_ASP\Optica_ASP\obj\Debug\Optica_ASP.Migrations.historial.resources
+C:\Users\Juan David\Documents\GitHub\Optica_ASP\Optica_ASP\obj\Debug\Optica_ASP.Migrations.historial2.resources
+C:\Users\Juan David\Documents\GitHub\Optica_ASP\Optica_ASP\obj\Debug\Optica_ASP.Migrations.foreignkeys.resources

@@ -55,14 +55,16 @@ namespace Optica_ASP.Models
             base.OnModelCreating(modelBuilder);
 
             var userData = modelBuilder.Entity<UserData>();
-            userData.ToTable("AspNetUserData");
-            userData.HasKey(x => x.Id);
+            userData.HasKey(x => x.UserId);
 
             var user = modelBuilder.Entity<ApplicationUser>();
-            user.HasMany(x => x.UserData).WithRequired().HasForeignKey(x => x.UserId);
+            user.HasRequired(x => x.UserData).WithRequiredPrincipal(x => x.User);
+
+            var registro = modelBuilder.Entity<Registro>();
+            registro.HasKey(x => x.HistorialId);
 
             var historial = modelBuilder.Entity<Historial>();
-            historial.HasMany(x => x.Registro).WithRequired().HasForeignKey(x => x.HistorialId);
+            historial.HasRequired(x => x.Registro).WithRequiredPrincipal(x => x.Historial);
         }
     }
 }
