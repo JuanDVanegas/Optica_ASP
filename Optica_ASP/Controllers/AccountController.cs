@@ -124,12 +124,33 @@ namespace Optica_ASP.Controllers
                 UserName = model.Nombre,
                 Email = model.Email
             };
-            if (model.RoleName == "Medico")
+            if (model.RoleName != "Admin")
             {
-                var codigoEntidad = from entity in db.Entity
-                                    where entity.Nombre == model.NombreEntidad && entity.Codigo == model.CodigoEntidad
-                                    select entity;
-                if (codigoEntidad.First().EntityId != null)
+                if (model.RoleName == "Medico")
+                {
+                    var codigoEntidad = from entity in db.Entity
+                                        where entity.Nombre == model.NombreEntidad && entity.Codigo == model.CodigoEntidad
+                                        select entity;
+                    if (codigoEntidad.First().EntityId != null)
+                    {
+                        user.UserData = new UserData
+                        {
+                            Nombre = model.Nombre,
+                            Apellido = model.Apellido,
+                            TipoDocumento = model.TipoDocumento,
+                            Documento = model.Documento,
+                            FechaNacimiento = model.FechaNacimiento,
+                            Entidad = codigoEntidad.First(),
+                            User = user
+                        };
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Las Credenciales de la entidad Son Incorrectas");
+                        return View(model);
+                    }
+                }
+                else
                 {
                     user.UserData = new UserData
                     {
@@ -138,28 +159,10 @@ namespace Optica_ASP.Controllers
                         TipoDocumento = model.TipoDocumento,
                         Documento = model.Documento,
                         FechaNacimiento = model.FechaNacimiento,
-                        Entidad = codigoEntidad.First(),
+                        Entidad = null,
                         User = user
                     };
-                }
-                else
-                {
-                    ModelState.AddModelError("", "Las Credenciales de la entidad Son Incorrectas");
-                    return View(model);
-                }
-            }
-            else
-            {
-                user.UserData = new UserData
-                {
-                    Nombre = model.Nombre,
-                    Apellido = model.Apellido,
-                    TipoDocumento = model.TipoDocumento,
-                    Documento = model.Documento,
-                    FechaNacimiento = model.FechaNacimiento,
-                    Entidad = null,
-                    User = user
-                };
+                } 
             }
             
             var result = await UserManager.CreateAsync(user, model.Password);

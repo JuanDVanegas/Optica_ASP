@@ -1,0 +1,40 @@
+﻿@model IEnumerable<Optica_ASP.Models.Historial>
+@{
+    Layout = "../ManageAccount/_LayoutAccount.cshtml";
+    ViewBag.Title = "Historial";
+}
+<table class="table">
+    <tr class="active">
+        <th>
+            @Html.DisplayNameFor(model => model.Medico)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Medico.UserData.Entidad)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Fecha)
+        </th>
+        <th></th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Medico.UserData.Nombre)
+            </td>
+            <td>
+                @Html.DisplayNameFor(model => model.Medico.UserData.Entidad.Nombre)
+            </td>
+            <td>
+                @Html.DisplayNameFor(model => model.Fecha)  
+            </td>
+            <td>
+                @Html.ActionLink("Ver", "HistorialDetails", new { id = item.HistorialId })
+            </td>
+        </tr>
+    }
+</table>
+@*@if (User.IsInRole("Medico"))
+{*@
+    @Html.ActionLink("Agregar nuevo Regisro", "CreateHistorial")
+@*}*@

@@ -59,6 +59,7 @@ namespace Optica_ASP.Models
     {
         [Key]
         public string HistorialId { get; set; } = Guid.NewGuid().ToString();
+
         [Column(TypeName = "Date")]
         public DateTime Fecha { get; set; }
         public virtual ApplicationUser Medico { get; set; }

@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Optica_ASP.Models;
+using System.Net;
 
 namespace Optica_ASP.Controllers
 {
@@ -62,8 +63,8 @@ namespace Optica_ASP.Controllers
 
             List<SelectListItem> dType = new List<SelectListItem>();
             dType.Add(new SelectListItem { Value = model.TipoDocumento, Text = model.TipoDocumento });
-            dType.Add(new SelectListItem { Value = "Cedula de Ciudadania", Text = "Cedula de Ciudadania" });
-            dType.Add(new SelectListItem { Value = "Tarjeta de Identidad", Text = "Tarjeta de Identidad" });
+            foreach (var documentType in db.DocumentType)
+                dType.Add(new SelectListItem { Value = documentType.Nombre, Text = documentType.Nombre });
             ViewBag.DTypes = dType;
 
             ViewBag.UserName = user.UserData.Nombre;
@@ -73,6 +74,7 @@ namespace Optica_ASP.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> UpdateData(UpdateViewModel model)
         {
             if (!ModelState.IsValid)
@@ -100,14 +102,69 @@ namespace Optica_ASP.Controllers
             return RedirectToAction("UpdateData");
         }
 
-        //public async Task<ActionResult> Historial(HistorialViewModel model)
-        //{
-        //    var Historial = from historial in db.Historial
-        //                    where historial == model.NombreEntidad && entity.Codigo == model.CodigoEntidad
-        //                    select historial;
-        //    if (Historial.First().Id != null)
-        //    { }
-        //    return View(model);
-        //}
+        public ActionResult Historial()
+        {
+            var user = UserManager.FindById(User.Identity.GetUserId());
+
+            if (User.IsInRole("Paciente"))
+            {
+                return View(db.Historial.Where(x => x.Paciente.Id == user.Id).ToList());
+            }
+            else if (User.IsInRole("Medico"))
+            {
+                return View(db.Historial.Where(x => x.Medico.Id == user.Id).ToList());
+            }
+            return View(db.Historial.ToList());
+        }
+        public async Task<ActionResult> HistorialDetails(string id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Historial historial = await db.Historial.FindAsync(id);
+            if (historial == null)
+            {
+                return RedirectToAction("Historial");
+            }
+            return View(historial);
+        }
+        public ActionResult CreateHistorial()
+        {
+            List<SelectListItem> dType = new List<SelectListItem>();
+            foreach (var documentType in db.DocumentType)
+                dType.Add(new SelectListItem { Value = documentType.Nombre, Text = documentType.Nombre });
+            ViewBag.DTypes = dType;
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> CreateHistorial(Historial model)
+        {
+            var medico = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            var paciente = db.Users.Where(x => 
+                x.UserData.Documento == model.Paciente.UserData.Documento &&
+                x.UserData.TipoDocumento == model.Paciente.UserData.TipoDocumento);
+            if (paciente.First() == null)
+            {
+                ModelState.AddModelError("", "El paciente no existe");
+                return View(model);
+            }
+            if (ModelState.IsValid)
+            {
+                var historial = new Historial
+                {
+                    Fecha = model.Fecha,
+                    Medico = medico,
+                    Paciente = paciente.First(),
+                    Registro = model.Registro
+                };
+                db.Historial.Add(historial);
+                await db.SaveChangesAsync();
+                return RedirectToAction("Historial");
+            }
+            return View(model);
+        }
     }
 }
