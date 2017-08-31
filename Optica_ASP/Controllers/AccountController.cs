@@ -11,6 +11,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Optica_ASP.Models;
+using System.Data.Entity;
 
 namespace Optica_ASP.Controllers
 {
@@ -91,10 +92,10 @@ namespace Optica_ASP.Controllers
         {
             List<SelectListItem> list = new List<SelectListItem>();
             foreach (var role in RoleManager.Roles)
-                //if (role.Name != "Admin")
-                //{
+                if (role.Name != "Admin")
+                {
                     list.Add(new SelectListItem { Value = role.Name, Text = role.Name });
-                //}
+                }
             ViewBag.Roles = list;
 
             List<SelectListItem> dType = new List<SelectListItem>();
@@ -114,8 +115,25 @@ namespace Optica_ASP.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
+            #region documentoyRoles
+            List<SelectListItem> list = new List<SelectListItem>();
+            foreach (var role in RoleManager.Roles)
+                if (role.Name != "Admin")
+                {
+                    list.Add(new SelectListItem { Value = role.Name, Text = role.Name });
+                }
+            ViewBag.Roles = list;
+
+            List<SelectListItem> dType = new List<SelectListItem>();
+
+            foreach (var documentType in db.DocumentType)
+                dType.Add(new SelectListItem { Value = documentType.Nombre, Text = documentType.Nombre });
+
+            ViewBag.DTypes = dType; 
+            #endregion
             var identityUser = await UserManager.FindByEmailAsync(model.Email);
-            if(identityUser != null)
+            var userData = await db.UserData.FirstOrDefaultAsync(x => x.Documento == model.Documento && x.TipoDocumento == model.TipoDocumento);
+            if(identityUser != null || userData != null)
             {
                 ModelState.AddModelError("", "No es posible registrar este usuario.");
                 return View(model);
@@ -124,14 +142,12 @@ namespace Optica_ASP.Controllers
                 UserName = model.Nombre,
                 Email = model.Email
             };
-
             if (model.RoleName == "Medico")
             {
-                var entidad = db.Entity.Single(x => x.Nombre == model.NombreEntidad && x.Codigo == model.CodigoEntidad);
+                var entidad = await db.Entity.FirstOrDefaultAsync(x => x.Nombre == model.NombreEntidad && x.Codigo == model.CodigoEntidad);
 
                 if (entidad != null)
                 {
-                    db.Entity.Attach(entidad);
                     user.UserData = new UserData
                     {
                         Nombre = model.Nombre,
@@ -160,7 +176,7 @@ namespace Optica_ASP.Controllers
                     FechaNacimiento = model.FechaNacimiento,
                     User = user,
                     Paciente = new Paciente()
-            };
+                };
             }
 
             var result = await UserManager.CreateAsync(user, model.Password);
