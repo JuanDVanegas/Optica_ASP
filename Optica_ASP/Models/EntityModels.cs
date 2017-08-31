@@ -19,19 +19,34 @@ namespace Optica_ASP.Models
         [Column(TypeName = "Date")]
         public DateTime FechaNacimiento { get; set; }
         public virtual ApplicationUser User { get; set; }
-        public virtual ICollection<Historial> Historial { get; set; }
+        public virtual Paciente Paciente { get; set; }
+        public virtual Medico Medico { get; set; }
+    }
+
+    [Table("AspNetMedico")]
+    public class Medico
+    {
+        [ForeignKey("UserData")]
+        public string MedicoId { get; set; }
+        public virtual List<Historial> Historial { get; set; }
         public virtual Entity Entidad { get; set; }
-        public UserData()
-        {
-            Historial = new List<Historial>();   
-        }
+        public virtual UserData UserData { get; set; }
+    }
+
+    [Table("AspNetPaciente")]
+    public class Paciente
+    {
+        [ForeignKey("UserData")]
+        public string PacienteId { get; set; }
+        public virtual List<Historial> Historial { get; set; }
+        public virtual UserData UserData { get; set; }
     }
 
     [Table("AspNetDocumentTypes")]
     public class DocumentType
     {
         [Key]
-        public string DocumentTypeId { get; set; } = Guid.NewGuid().ToString();
+        public int DocumentTypeId { get; set; }
         [StringLength(100)]
         public string Nombre { get; set; }
 
@@ -47,11 +62,7 @@ namespace Optica_ASP.Models
         [StringLength(200)]
         public string Direccion { get; set; }
         public string Codigo { get; set; } = Guid.NewGuid().ToString();
-        public virtual ICollection<ApplicationUser> Medico { get; set; }
-        public Entity()
-        {
-            Medico = new List<ApplicationUser>();   
-        }
+        public virtual List<Medico> Medico { get; set; }
     }
 
     [Table("AspNetHistorial")]
@@ -62,8 +73,8 @@ namespace Optica_ASP.Models
 
         [Column(TypeName = "Date")]
         public DateTime Fecha { get; set; }
-        public virtual ApplicationUser Medico { get; set; }
-        public virtual ApplicationUser Paciente { get; set; }
+        public virtual Medico Medico { get; set; }
+        public virtual Paciente Paciente { get; set; }
         public virtual Registro Registro { get; set; }
     }
 
@@ -71,7 +82,7 @@ namespace Optica_ASP.Models
     public class Registro
     {
         [ForeignKey("Historial")]
-        public string RegistroId { get; set; } = Guid.NewGuid().ToString();
+        public string RegistroId { get; set; }
         public string Descripcion { get; set; }
         public string Resultado { get; set; }
         public string Tratamiento { get; set; }

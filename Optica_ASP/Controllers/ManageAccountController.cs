@@ -49,7 +49,6 @@ namespace Optica_ASP.Controllers
 
         public ActionResult Index()
         {
-            var user = UserManager.FindById(User.Identity.GetUserId());
             ViewBag.Entidad = "ABC Opticas";
             return View();
         }
@@ -104,17 +103,18 @@ namespace Optica_ASP.Controllers
 
         public ActionResult Historial()
         {
-            var user = UserManager.FindById(User.Identity.GetUserId());
-
-            if (User.IsInRole("Paciente"))
-            {
-                return View(db.Historial.Where(x => x.Paciente.Id == user.Id).ToList());
-            }
-            else if (User.IsInRole("Medico"))
-            {
-                return View(db.Historial.Where(x => x.Medico.Id == user.Id).ToList());
-            }
-            return View(db.Historial.ToList());
+            //var user = UserManager.FindById(User.Identity.GetUserId());
+            //if (User.IsInRole("Paciente"))
+            //{
+            //    var historial = user.UserData.Medico.Historial;
+            //}
+            //if (User.IsInRole("Medico"))
+            //{
+            //    var historial = user.UserData.Medico.Historial;
+            //}
+            //return View(db.Historial.ToList());
+            //return View(historial.ToList());
+            return View();
         }
         public async Task<ActionResult> HistorialDetails(string id)
         {
@@ -138,33 +138,46 @@ namespace Optica_ASP.Controllers
             return View();
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> CreateHistorial(Historial model)
-        {
-            var medico = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-            var paciente = db.Users.Where(x => 
-                x.UserData.Documento == model.Paciente.UserData.Documento &&
-                x.UserData.TipoDocumento == model.Paciente.UserData.TipoDocumento);
-            if (paciente.First() == null)
-            {
-                ModelState.AddModelError("", "El paciente no existe");
-                return View(model);
-            }
-            if (ModelState.IsValid)
-            {
-                var historial = new Historial
-                {
-                    Fecha = model.Fecha,
-                    Medico = medico,
-                    Paciente = paciente.First(),
-                    Registro = model.Registro
-                };
-                db.Historial.Add(historial);
-                await db.SaveChangesAsync();
-                return RedirectToAction("Historial");
-            }
-            return View(model);
-        }
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<ActionResult> CreateHistorial(Historial model)
+        //{
+        //    var medico = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+        //    var paciente = db.Paciente.Single(x => 
+        //        x.UserData.Documento == model.Paciente.UserData.Documento &&
+        //        x.UserData.TipoDocumento == model.Paciente.UserData.TipoDocumento);
+        //    if (paciente == null)
+        //    {
+        //        ModelState.AddModelError("", "No se encontro el paciente");
+        //        return View(model);
+        //    }
+        //    if (ModelState.IsValid)
+        //    {
+        //        if (medico.Id == paciente.Id)
+        //        {
+        //            ModelState.AddModelError("", "No se encontro el paciente");
+        //            return View(model);
+        //        }
+        //        db.Users.Attach(paciente);
+        //        //db.Users.Attach(medico);
+        //        var registro = new Registro
+        //        {
+        //            Descripcion = model.Registro.Descripcion,
+        //            Resultado = model.Registro.Resultado,
+        //            Tratamiento = model.Registro.Tratamiento
+        //        };
+        //        var historial = new Historial
+        //        {
+        //            Fecha = model.Fecha,
+        //            Medico = medico,
+        //            Paciente = paciente,
+        //            Registro = registro                   
+        //        };
+        //        db.Historial.Add(historial);
+        //        await db.SaveChangesAsync();
+        //        return RedirectToAction("Historial");
+        //    }
+        //    return View(model);
+        //}
     }
 }

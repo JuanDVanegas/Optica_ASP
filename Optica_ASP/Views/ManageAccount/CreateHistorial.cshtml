@@ -3,7 +3,7 @@
     Layout = "../ManageAccount/_LayoutAccount.cshtml";
     ViewBag.Title = "Agregar Registro";
 }
-@using (Html.BeginForm()) 
+@using (Html.BeginForm("CreateHistorial", "ManageAccount", FormMethod.Post, new { @class = "form-horizontal", role = "form" })) 
 {
     @Html.AntiForgeryToken()
     

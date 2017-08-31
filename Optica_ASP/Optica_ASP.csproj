@@ -202,33 +202,6 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
-    <Compile Include="AspNetDocumentTypes.cs">
-      <DependentUpon>EntityModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="AspNetEntitys.cs">
-      <DependentUpon>EntityModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="AspNetHistorial.cs">
-      <DependentUpon>EntityModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="AspNetRegistro.cs">
-      <DependentUpon>EntityModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="AspNetRoles.cs">
-      <DependentUpon>EntityModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="AspNetUserClaims.cs">
-      <DependentUpon>EntityModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="AspNetUserData.cs">
-      <DependentUpon>EntityModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="AspNetUserLogins.cs">
-      <DependentUpon>EntityModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="AspNetUsers.cs">
-      <DependentUpon>EntityModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="AunteticateAuthorize.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\DocumentTypeController.cs" />
@@ -237,71 +210,8 @@
     <Compile Include="Controllers\ManageAccountController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
-    <Compile Include="EntityModel.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>EntityModel.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EntityModel.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>EntityModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EntityModel.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>EntityModel.edmx</DependentUpon>
-    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201707282142544_InitialCreate.cs" />
-    <Compile Include="Migrations\201707282142544_InitialCreate.Designer.cs">
-      <DependentUpon>201707282142544_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201707292244584_role.cs" />
-    <Compile Include="Migrations\201707292244584_role.Designer.cs">
-      <DependentUpon>201707292244584_role.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201707312120019_userdata.cs" />
-    <Compile Include="Migrations\201707312120019_userdata.Designer.cs">
-      <DependentUpon>201707312120019_userdata.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201708012056028_documenttype.cs" />
-    <Compile Include="Migrations\201708012056028_documenttype.Designer.cs">
-      <DependentUpon>201708012056028_documenttype.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201708012130350_date.cs" />
-    <Compile Include="Migrations\201708012130350_date.Designer.cs">
-      <DependentUpon>201708012130350_date.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201708012133155_datetime.cs" />
-    <Compile Include="Migrations\201708012133155_datetime.Designer.cs">
-      <DependentUpon>201708012133155_datetime.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201708031627037_datetodatetime.cs" />
-    <Compile Include="Migrations\201708031627037_datetodatetime.Designer.cs">
-      <DependentUpon>201708031627037_datetodatetime.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201708161824451_2tablas.cs" />
-    <Compile Include="Migrations\201708161824451_2tablas.Designer.cs">
-      <DependentUpon>201708161824451_2tablas.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201708161959162_cambioUserdata.cs" />
-    <Compile Include="Migrations\201708161959162_cambioUserdata.Designer.cs">
-      <DependentUpon>201708161959162_cambioUserdata.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201708281927315_historial.cs" />
-    <Compile Include="Migrations\201708281927315_historial.Designer.cs">
-      <DependentUpon>201708281927315_historial.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201708281942030_historial2.cs" />
-    <Compile Include="Migrations\201708281942030_historial2.Designer.cs">
-      <DependentUpon>201708281942030_historial2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201708291953547_foreignkeys.cs" />
-    <Compile Include="Migrations\201708291953547_foreignkeys.Designer.cs">
-      <DependentUpon>201708291953547_foreignkeys.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -317,16 +227,6 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\overwrite.css" />
     <Content Include="Content\site.css" />
-    <Content Include="EntityModel.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>EntityModel.edmx</DependentUpon>
-      <LastGenOutput>EntityModel.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="EntityModel.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>EntityModel.edmx</DependentUpon>
-      <LastGenOutput>EntityModel.cs</LastGenOutput>
-    </Content>
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -341,13 +241,6 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <EntityDeploy Include="EntityModel.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>EntityModel.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="EntityModel.edmx.diagram">
-      <DependentUpon>EntityModel.edmx</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -425,44 +318,6 @@
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201707282142544_InitialCreate.resx">
-      <DependentUpon>201707282142544_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201707292244584_role.resx">
-      <DependentUpon>201707292244584_role.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201707312120019_userdata.resx">
-      <DependentUpon>201707312120019_userdata.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201708012056028_documenttype.resx">
-      <DependentUpon>201708012056028_documenttype.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201708012130350_date.resx">
-      <DependentUpon>201708012130350_date.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201708012133155_datetime.resx">
-      <DependentUpon>201708012133155_datetime.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201708031627037_datetodatetime.resx">
-      <DependentUpon>201708031627037_datetodatetime.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201708161824451_2tablas.resx">
-      <DependentUpon>201708161824451_2tablas.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201708161959162_cambioUserdata.resx">
-      <DependentUpon>201708161959162_cambioUserdata.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201708281927315_historial.resx">
-      <DependentUpon>201708281927315_historial.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201708281942030_historial2.resx">
-      <DependentUpon>201708281942030_historial2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201708291953547_foreignkeys.resx">
-      <DependentUpon>201708291953547_foreignkeys.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

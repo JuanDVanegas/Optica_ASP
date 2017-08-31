@@ -315,27 +315,14 @@ C:\Users\Juan David\Documents\GitHub\Optica_ASP\Optica_ASP\bin\es\Microsoft.Owin
 C:\Users\Juan David\Documents\GitHub\Optica_ASP\Optica_ASP\bin\es\Microsoft.Owin.Security.Twitter.resources.dll
 C:\Users\Juan David\Documents\GitHub\Optica_ASP\Optica_ASP\bin\es\Microsoft.Owin.Security.MicrosoftAccount.resources.dll
 C:\Users\Juan David\Documents\GitHub\Optica_ASP\Optica_ASP\obj\Debug\Optica_ASP.csprojResolveAssemblyReference.cache
-C:\Users\Juan David\Documents\GitHub\Optica_ASP\Optica_ASP\obj\Debug\Optica_ASP.Migrations.InitialCreate.resources
-C:\Users\Juan David\Documents\GitHub\Optica_ASP\Optica_ASP\obj\Debug\Optica_ASP.Migrations.role.resources
-C:\Users\Juan David\Documents\GitHub\Optica_ASP\Optica_ASP\obj\Debug\Optica_ASP.Migrations.userdata.resources
-C:\Users\Juan David\Documents\GitHub\Optica_ASP\Optica_ASP\obj\Debug\Optica_ASP.csproj.GenerateResource.Cache
 C:\Users\Juan David\Documents\GitHub\Optica_ASP\Optica_ASP\obj\Debug\Optica_ASP.dll
 C:\Users\Juan David\Documents\GitHub\Optica_ASP\Optica_ASP\obj\Debug\Optica_ASP.pdb
 C:\Users\SOPORTE\Documents\Visual Studio 2015\Projects\Optica_ASP\Optica_ASP\obj\Debug\Optica_ASP.Migrations.documenttype.resources
 C:\Users\SOPORTE\Documents\Visual Studio 2015\Projects\Optica_ASP\Optica_ASP\obj\Debug\Optica_ASP.Migrations.date.resources
 C:\Users\SOPORTE\Documents\Visual Studio 2015\Projects\Optica_ASP\Optica_ASP\obj\Debug\Optica_ASP.Migrations.datetime.resources
-C:\Users\Juan David\Documents\GitHub\Optica_ASP\Optica_ASP\obj\Debug\Optica_ASP.Migrations.documenttype.resources
-C:\Users\Juan David\Documents\GitHub\Optica_ASP\Optica_ASP\obj\Debug\Optica_ASP.Migrations.date.resources
-C:\Users\Juan David\Documents\GitHub\Optica_ASP\Optica_ASP\obj\Debug\Optica_ASP.Migrations.datetime.resources
-C:\Users\Juan David\Documents\GitHub\Optica_ASP\Optica_ASP\obj\Debug\Optica_ASP.Migrations.datetodatetime.resources
 C:\Users\SOPORTE\Documents\Visual Studio 2015\Projects\Optica_ASP\Optica_ASP\obj\Debug\Optica_ASP.Migrations.datetodatetime.resources
 C:\Users\SOPORTE\Documents\Visual Studio 2015\Projects\Optica_ASP\Optica_ASP\obj\Debug\Optica_ASP.Migrations._2tablas.resources
 C:\Users\SOPORTE\Documents\Visual Studio 2015\Projects\Optica_ASP\Optica_ASP\obj\Debug\Optica_ASP.Migrations.cambioUserdata.resources
-C:\Users\Juan David\Documents\GitHub\Optica_ASP\Optica_ASP\obj\Debug\Optica_ASP.Migrations._2tablas.resources
-C:\Users\Juan David\Documents\GitHub\Optica_ASP\Optica_ASP\obj\Debug\Optica_ASP.Migrations.cambioUserdata.resources
 C:\Users\SOPORTE\Documents\Visual Studio 2015\Projects\Optica_ASP\Optica_ASP\obj\Debug\Optica_ASP.Migrations.historial.resources
 C:\Users\SOPORTE\Documents\Visual Studio 2015\Projects\Optica_ASP\Optica_ASP\obj\Debug\Optica_ASP.Migrations.historial2.resources
-C:\Users\Juan David\Documents\GitHub\Optica_ASP\Optica_ASP\obj\Debug\Optica_ASP.Migrations.historial.resources
-C:\Users\Juan David\Documents\GitHub\Optica_ASP\Optica_ASP\obj\Debug\Optica_ASP.Migrations.historial2.resources
-C:\Users\Juan David\Documents\GitHub\Optica_ASP\Optica_ASP\obj\Debug\Optica_ASP.Migrations.foreignkeys.resources
 C:\Users\SOPORTE\Documents\Visual Studio 2015\Projects\Optica_ASP\Optica_ASP\obj\Debug\Optica_ASP.Migrations.foreignkeys.resources
