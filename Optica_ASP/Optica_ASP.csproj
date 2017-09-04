@@ -213,6 +213,14 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201709042014557_fkEntity.cs" />
+    <Compile Include="Migrations\201709042014557_fkEntity.Designer.cs">
+      <DependentUpon>201709042014557_fkEntity.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201709042053100_fk_historial.cs" />
+    <Compile Include="Migrations\201709042053100_fk_historial.Designer.cs">
+      <DependentUpon>201709042053100_fk_historial.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\EntityModels.cs" />
@@ -307,6 +315,7 @@
     <Content Include="Views\Entity\Index.cshtml" />
     <Content Include="Views\ManageAccount\Historial.cshtml" />
     <Content Include="Views\ManageAccount\CreateHistorial.cshtml" />
+    <Content Include="Views\ManageAccount\HistorialDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -321,6 +330,14 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201709042014557_fkEntity.resx">
+      <DependentUpon>201709042014557_fkEntity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201709042053100_fk_historial.resx">
+      <DependentUpon>201709042053100_fk_historial.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

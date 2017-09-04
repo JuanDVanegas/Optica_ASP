@@ -45,6 +45,8 @@ namespace Optica_ASP.Models
         public DbSet<Entity> Entity { get; set; }
         public DbSet<Historial> Historial { get; set; }
         public DbSet<Registro> Registro { get; set; }
+        public DbSet<Medico> Medico { get; set; }
+        public DbSet<Paciente> Paciente { get; set; }
         //protected override void OnModelCreating(DbModelBuilder modelBuilder)
         //{
         //    base.OnModelCreating(modelBuilder);

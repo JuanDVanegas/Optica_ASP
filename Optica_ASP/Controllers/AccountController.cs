@@ -70,6 +70,11 @@ namespace Optica_ASP.Controllers
                 return View(model);
             }
             var user = await  UserManager.FindByEmailAsync(model.Email);
+            if(user == null)
+            {
+                ModelState.AddModelError("", "No se ha podido encontrar tu cuenta");
+                return View(model);
+            }
             // No cuenta los errores de inicio de sesión para el bloqueo de la cuenta
             // Para permitir que los errores de contraseña desencadenen el bloqueo de la cuenta, cambie a shouldLockout: true
             var result = await SignInManager.PasswordSignInAsync(user.UserName, model.Password, model.RememberMe, shouldLockout: true);
@@ -144,10 +149,11 @@ namespace Optica_ASP.Controllers
             };
             if (model.RoleName == "Medico")
             {
-                var entidad = await db.Entity.FirstOrDefaultAsync(x => x.Nombre == model.NombreEntidad && x.Codigo == model.CodigoEntidad);
+                Entity entidad = await db.Entity.FirstOrDefaultAsync(x => x.Nombre == model.NombreEntidad && x.Codigo == model.CodigoEntidad);
 
                 if (entidad != null)
                 {
+                    db.Entity.Attach(entidad);
                     user.UserData = new UserData
                     {
                         Nombre = model.Nombre,
@@ -156,7 +162,7 @@ namespace Optica_ASP.Controllers
                         Documento = model.Documento,
                         FechaNacimiento = model.FechaNacimiento,
                         User = user,
-                        Medico = new Medico { Entidad = entidad }
+                        Medico = new Medico { EntidaId = entidad.EntityId}
                     };
                 }
                 else

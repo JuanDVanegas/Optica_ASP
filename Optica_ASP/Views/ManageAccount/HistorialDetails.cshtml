@@ -1,0 +1,62 @@
+﻿@model Optica_ASP.Models.Historial
+@{
+    Layout = "../ManageAccount/_LayoutAccount.cshtml";
+    ViewBag.Title = "Historial";
+}
+<div>
+    <table class="table table-bordered">
+        <tr align="center" valign="middle">
+            <th colspan="2">HISTORIAL</th>
+        </tr>
+        <tr>
+            <td class="active"><b>@Html.DisplayNameFor(m => m.Fecha)</b></td>
+            <td>@Html.DisplayFor(m => m.Fecha)</td>
+        </tr>
+        <tr>
+            <td class="active"><b>@Html.DisplayNameFor(m => m.Medico.Entidad)</b></td>
+            <td>@Html.DisplayFor(m => m.Medico.Entidad.Nombre)</td>
+        </tr>
+        <tr>
+            <td class="active"><b>@Html.DisplayNameFor(m => m.Medico.Entidad.Direccion)</b></td>
+            <td>@Html.DisplayFor(m => m.Medico.Entidad.Direccion)</td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                Paciente
+            </td>
+        </tr>
+        <tr>
+            <td class="active"><b>@Html.DisplayNameFor(m => m.Paciente.UserData.Nombre)</b></td>
+            <td>@Html.DisplayFor(m => m.Paciente.UserData.Nombre)</td>
+        </tr>
+        <tr>
+            <td class="active"><b>@Html.DisplayNameFor(m => m.Paciente.UserData.Documento)</b></td>
+            <td>@Html.DisplayFor(m => m.Paciente.UserData.Documento)</td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                Medico
+            </td>
+        </tr>
+        <tr>
+            <td class="active"><b>@Html.DisplayNameFor(m => m.Medico.UserData.Nombre)</b></td>
+            <td>@Html.DisplayFor(m => m.Medico.UserData.Nombre)</td>
+        </tr>
+        <tr>
+            <td class="active"><b>@Html.DisplayNameFor(m => m.Medico.UserData.Documento)</b></td>
+            <td>@Html.DisplayFor(m => m.Medico.UserData.Documento)</td>
+        </tr>
+        <tr>
+            <td class="active"><b>@Html.DisplayNameFor(m => m.Registro.Descripcion)</b></td>
+            <td>@Html.DisplayFor(m => m.Registro.Descripcion)</td>
+        </tr>
+        <tr>
+            <td class="active"><b>@Html.DisplayNameFor(m => m.Registro.Resultado)</b></td>
+            <td>@Html.DisplayFor(m => m.Registro.Resultado)</td>
+        </tr>
+        <tr>
+            <td class="active"><b>@Html.DisplayNameFor(m => m.Registro.Tratamiento)</b></td>
+            <td>@Html.DisplayFor(m => m.Registro.Tratamiento)</td>
+        </tr>
+    </table>
+</div>

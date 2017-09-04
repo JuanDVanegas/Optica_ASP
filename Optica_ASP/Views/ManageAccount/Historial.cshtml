@@ -5,11 +5,23 @@
 }
 <table class="table">
     <tr class="active">
+        @if (User.IsInRole("Paciente"))
+        {
+            <th>
+                @Html.DisplayNameFor(model => model.Medico)
+            </th>
+        }
+        else
+        {
+            <th>
+                @Html.DisplayNameFor(model => model.Paciente)
+            </th>
+        }
         <th>
-            @Html.DisplayNameFor(model => model.Medico)
+            @Html.DisplayNameFor(model => model.Medico.Entidad)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Medico.UserData.Entidad)
+            @Html.DisplayNameFor(model => model.Medico.Entidad.Direccion)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Fecha)
@@ -19,14 +31,26 @@
     @foreach (var item in Model)
     {
         <tr>
+            @if (User.IsInRole("Paciente"))
+            {
+                <td>
+                    @Html.DisplayFor(modelItem => item.Medico.UserData.Nombre)
+                </td>
+            }
+            else
+            {
+                <td>
+                    @Html.DisplayFor(modelItem => item.Paciente.UserData.Nombre)
+                </td>
+            }
             <td>
-                @Html.DisplayFor(modelItem => item.Medico.UserData.Nombre)
+                @Html.DisplayFor(modelItem => item.Medico.Entidad.Nombre)
             </td>
             <td>
-                @Html.DisplayNameFor(model => model.Medico.UserData.Entidad.Nombre)
+                @Html.DisplayFor(modelItem => item.Medico.Entidad.Direccion)
             </td>
             <td>
-                @Html.DisplayNameFor(model => model.Fecha)  
+                @Html.DisplayFor(modelItem => item.Fecha)  
             </td>
             <td>
                 @Html.ActionLink("Ver", "HistorialDetails", new { id = item.HistorialId })
@@ -34,7 +58,7 @@
         </tr>
     }
 </table>
-@*@if (User.IsInRole("Medico"))
-{*@
+@if (User.IsInRole("Medico"))
+{
     @Html.ActionLink("Agregar nuevo Regisro", "CreateHistorial")
-@*}*@
+}
