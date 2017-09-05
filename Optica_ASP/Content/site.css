@@ -10,10 +10,8 @@ body {
 .dl-horizontal dt {
     white-space: normal;
 }
-input,
-select,
-textarea {
-    max-width: 280px;
+.max-width {
+    max-width: 300px;
 }
 iframe{
 	border:0;	

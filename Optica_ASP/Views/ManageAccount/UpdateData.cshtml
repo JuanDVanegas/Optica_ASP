@@ -15,43 +15,43 @@
                 <div class="col-md-12">
                     <div class="form-group">
                         @Html.LabelFor(m => m.RoleName, new { @class = "col-md-4 control-label" })
-                        <div class="col-md-8">
+                        <div class="col-md-8 max-width">
                             @Html.TextBoxFor(m => m.RoleName, new { @class = "form-control", @readonly="readonly"})
                         </div>
                     </div>
                     <div class="form-group">
                         @Html.LabelFor(m => m.Nombre, new {@class = "col-md-4 control-label"})
-                        <div class="col-md-8">
+                        <div class="col-md-8 max-width">
                             @Html.TextBoxFor(m => m.Nombre, new {@class = "form-control"})
                         </div>
                     </div>
                     <div class="form-group">
                         @Html.LabelFor(m => m.Apellido, new {@class = "col-md-4 control-label"})
-                        <div class="col-md-8">
+                        <div class="col-md-8 max-width">
                             @Html.TextBoxFor(m => m.Apellido, new {@class = "form-control"})
                         </div>
                     </div>
                     <div class="form-group">
                         @Html.LabelFor(m => m.TipoDocumento, new {@class = "col-md-4 control-label"})
-                        <div class="col-md-8">
+                        <div class="col-md-8 max-width">
                             @Html.DropDownListFor(m => m.TipoDocumento, new SelectList(ViewBag.DTypes, "Value", "Text"), new {@class = "form-control"})
                         </div>
                     </div>
                     <div class="form-group">
                         @Html.LabelFor(m => m.Documento, new {@class = "col-md-4 control-label"})
-                        <div class="col-md-8">
+                        <div class="col-md-8 max-width">
                             @Html.TextBoxFor(m => m.Documento, new {@class = "form-control"})
                         </div>
                     </div>
                     <div class="form-group">
                         @Html.LabelFor(m => m.FechaNacimiento, new {@class = "col-md-4 control-label"})
-                        <div class="col-md-8">
+                        <div class="col-md-8 max-width">
                             @Html.EditorFor(m => m.FechaNacimiento, new {htmlAttributes = new {@class = "form-control"}})
                         </div>      
                     </div>
                     <div class="form-group">
                         @Html.LabelFor(m => m.Email, new {@class = "col-md-4 control-label"})
-                        <div class="col-md-8">
+                        <div class="col-md-8 max-width">
                             @Html.TextBoxFor(m => m.Email, new {@class = "form-control"})
                         </div>
                     </div>

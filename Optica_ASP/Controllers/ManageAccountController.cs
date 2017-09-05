@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Optica_ASP.Models;
 using System.Net;
+using PagedList;
 
 namespace Optica_ASP.Controllers
 {
@@ -110,23 +111,37 @@ namespace Optica_ASP.Controllers
             return RedirectToAction("UpdateData");
         }
 
-        public ActionResult Historial()
+        public ActionResult Historial(string searchString, int? page)
         {
+            if (searchString != null)
+            {
+                page = 1;
+            }
             var user = UserManager.FindById(User.Identity.GetUserId());
+            var historial = db.Historial.ToList();
             if (User.IsInRole("Paciente"))
             {
-                var historial = user.UserData.Paciente.Historial;
+                historial = user.UserData.Paciente.Historial;
+                if (!string.IsNullOrEmpty(searchString))
+                {
+                    historial = historial.Where(h => h.Medico.UserData.Nombre.Contains(searchString)
+                                                   || h.Medico.Entidad.Nombre.Contains(searchString)).ToList();
+                }
             }
             if (User.IsInRole("Medico"))
             {
-                var historial = user.UserData.Medico.Historial;
-            }
-            if (User.IsInRole("Medico"))
-            {
+                historial = user.UserData.Medico.Historial;
+                if (!string.IsNullOrEmpty(searchString))
+                {
+                    historial = historial.Where(h => h.Paciente.UserData.Nombre.Contains(searchString)
+                                                     || h.Paciente.UserData.Documento.Contains(searchString)).ToList();
+                }
                 var entidad = user.UserData.Medico.Entidad.Nombre;
                 ViewBag.Entidad = entidad;
             }
-            return View(db.Historial.ToList());
+            int pageSize = 5;
+            int pageNumber = (page ?? 1);
+            return View(historial.ToPagedList(pageNumber, pageSize));
         }
         public async Task<ActionResult> HistorialDetails(string id)
         {
@@ -138,6 +153,12 @@ namespace Optica_ASP.Controllers
             if (historial == null)
             {
                 return RedirectToAction("Historial");
+            }
+            var user = UserManager.FindById(User.Identity.GetUserId());
+            if (User.IsInRole("Medico"))
+            {
+                var entidad = user.UserData.Medico.Entidad.Nombre;
+                ViewBag.Entidad = entidad;
             }
             return View(historial);
         }

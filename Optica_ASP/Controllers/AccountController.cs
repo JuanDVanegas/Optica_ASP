@@ -90,19 +90,53 @@ namespace Optica_ASP.Controllers
             }
         }
 
+        [AunteticateAuthorize]
+        [AllowAnonymous]
+        public ActionResult RoleRegister()
+        {
+            List<SelectListItem> list = new List<SelectListItem>();
+
+            foreach (var role in db.Roles.Where(r => !r.Name.Contains("Admin")))
+                list.Add(new SelectListItem { Value = role.Name, Text = role.Name });
+
+            ViewBag.DTypes = list;
+            return View();
+        }
+
+        [AunteticateAuthorize]
+        [AllowAnonymous]
+        [HttpPost]
+        public ActionResult RoleRegister(RoleRegisterViewModel model)
+        {
+            if (model.UserRole == "Medico")
+            {
+                return RedirectToAction("RegisterMedico");
+            }
+            if (model.UserRole == "Paciente")
+            {
+                return RedirectToAction("Register");
+            }
+            return View(model);
+        }
         // GET: /Account/Register
         [AunteticateAuthorize]
         [AllowAnonymous]
         public ActionResult Register()
         {
-            List<SelectListItem> list = new List<SelectListItem>();
-            foreach (var role in RoleManager.Roles)
-                if (role.Name != "Admin")
-                {
-                    list.Add(new SelectListItem { Value = role.Name, Text = role.Name });
-                }
-            ViewBag.Roles = list;
+            List<SelectListItem> dType = new List<SelectListItem>();
 
+            foreach (var documentType in db.DocumentType)
+                dType.Add(new SelectListItem { Value = documentType.Nombre, Text = documentType.Nombre });
+
+            ViewBag.DTypes = dType;
+
+            return View();
+        }
+
+        [AunteticateAuthorize]
+        [AllowAnonymous]
+        public ActionResult RegisterMedico()
+        {
             List<SelectListItem> dType = new List<SelectListItem>();
 
             foreach (var documentType in db.DocumentType)
@@ -136,6 +170,8 @@ namespace Optica_ASP.Controllers
 
             ViewBag.DTypes = dType; 
             #endregion
+
+            string roleName = "Paciente";
             var identityUser = await UserManager.FindByEmailAsync(model.Email);
             var userData = await db.UserData.FirstOrDefaultAsync(x => x.Documento == model.Documento && x.TipoDocumento == model.TipoDocumento);
             if(identityUser != null || userData != null)
@@ -147,31 +183,20 @@ namespace Optica_ASP.Controllers
                 UserName = model.Nombre,
                 Email = model.Email
             };
-            if (model.RoleName == "Medico")
+            if (User.IsInRole("Admin"))
             {
-                Entity entidad = await db.Entity.FirstOrDefaultAsync(x => x.Nombre == model.NombreEntidad && x.Codigo == model.CodigoEntidad);
-
-                if (entidad != null)
+                roleName = "Admin";
+                user.UserData = new UserData
                 {
-                    db.Entity.Attach(entidad);
-                    user.UserData = new UserData
-                    {
-                        Nombre = model.Nombre,
-                        Apellido = model.Apellido,
-                        TipoDocumento = model.TipoDocumento,
-                        Documento = model.Documento,
-                        FechaNacimiento = model.FechaNacimiento,
-                        User = user,
-                        Medico = new Medico { EntidaId = entidad.EntityId}
-                    };
-                }
-                else
-                {
-                    ModelState.AddModelError("", "Las Credenciales de la entidad Son Incorrectas");
-                    return View(model);
-                }
+                    Nombre = model.Nombre,
+                    Apellido = model.Apellido,
+                    TipoDocumento = model.TipoDocumento,
+                    Documento = model.Documento,
+                    FechaNacimiento = model.FechaNacimiento,
+                    User = user,
+                };
             }
-            if (model.RoleName == "Paciente")
+            else
             {
                 user.UserData = new UserData
                 {
@@ -184,11 +209,74 @@ namespace Optica_ASP.Controllers
                     Paciente = new Paciente()
                 };
             }
-
             var result = await UserManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
             {
-                result = await UserManager.AddToRoleAsync(user.Id, model.RoleName);
+                result = await UserManager.AddToRoleAsync(user.Id, roleName);
+                // Para obtener más información sobre cómo habilitar la confirmación de cuenta y el restablecimiento de contraseña, visite http://go.microsoft.com/fwlink/?LinkID=320771
+                // Enviar correo electrónico con este vínculo
+                string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                await UserManager.SendEmailAsync(user.Id, "Confirmar cuenta", callbackUrl);
+
+                return RedirectToAction("ConfirmEmailSend", "Account");
+            }
+            AddErrors(result);
+            // Si llegamos a este punto, es que se ha producido un error y volvemos a mostrar el formulario
+            return View(model);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> RegisterMedico(RegisterMedicoViewModel model)
+        {
+            #region documentypes
+            List<SelectListItem> dType = new List<SelectListItem>();
+
+            foreach (var documentType in db.DocumentType)
+                dType.Add(new SelectListItem { Value = documentType.Nombre, Text = documentType.Nombre });
+
+            ViewBag.DTypes = dType;
+            #endregion
+            string roleName = "Medico";
+            var identityUser = await UserManager.FindByEmailAsync(model.Email);
+            var userData = await db.UserData.FirstOrDefaultAsync(x => x.Documento == model.Documento && x.TipoDocumento == model.TipoDocumento);
+            if (identityUser != null || userData != null)
+            {
+                ModelState.AddModelError("", "No es posible registrar este usuario.");
+                return View(model);
+            }
+            var user = new ApplicationUser
+            {
+                UserName = model.Nombre,
+                Email = model.Email
+            };
+            Entity entidad = await db.Entity.FirstOrDefaultAsync(x => x.Nombre == model.NombreEntidad && x.Codigo == model.CodigoEntidad);
+
+            if (entidad != null)
+            {
+                db.Entity.Attach(entidad);
+                user.UserData = new UserData
+                {
+                    Nombre = model.Nombre,
+                    Apellido = model.Apellido,
+                    TipoDocumento = model.TipoDocumento,
+                    Documento = model.Documento,
+                    FechaNacimiento = model.FechaNacimiento,
+                    User = user,
+                    Medico = new Medico { EntidaId = entidad.EntityId }
+                };
+            }
+            else
+            {
+                ModelState.AddModelError("", "Las Credenciales de la entidad Son Incorrectas");
+                return View(model);
+            }
+            var result = await UserManager.CreateAsync(user, model.Password);
+            if (result.Succeeded)
+            {
+                result = await UserManager.AddToRoleAsync(user.Id, roleName);
                 // Para obtener más información sobre cómo habilitar la confirmación de cuenta y el restablecimiento de contraseña, visite http://go.microsoft.com/fwlink/?LinkID=320771
                 // Enviar correo electrónico con este vínculo
                 string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);

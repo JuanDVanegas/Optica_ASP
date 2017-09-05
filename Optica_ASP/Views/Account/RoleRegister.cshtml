@@ -1,0 +1,26 @@
+﻿@model Optica_ASP.Models.RoleRegisterViewModel
+@{
+    ViewBag.Title = "Registrarse";
+}
+
+<h2>@ViewBag.Title</h2>
+<h4>Elija el rol de usuario.</h4>
+<hr />
+@using (Html.BeginForm("RoleRegister", "Account", FormMethod.Post, new {@class = "form-horizontal", role = "form"}))
+{
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                @Html.LabelFor(m => m.UserRole, new {@class = "col-md-2 control-label"})
+                <div class="col-md-10">
+                    @Html.DropDownListFor(m => m.UserRole, new SelectList(ViewBag.DTypes, "Value", "Text"), new {@class = "form-control max-width"})
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-2">
+                    <input type="submit" class="btn btn-primary" value="Siguiente"/>
+                </div>
+            </div>
+        </div>
+    </div>
+}

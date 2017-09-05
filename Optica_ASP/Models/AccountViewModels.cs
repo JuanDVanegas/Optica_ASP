@@ -75,6 +75,13 @@ namespace Optica_ASP.Models
         public bool RememberMe { get; set; }
     }
 
+    public class RoleRegisterViewModel
+    {
+        [Required]
+        [Display(Name = "Rol de Usuario")]
+        public string UserRole { get; set; }
+    }
+
     public class RegisterViewModel
     {
         [Required]
@@ -116,10 +123,55 @@ namespace Optica_ASP.Models
         [DataType(DataType.Date)]
         [Display(Name = "Fecha de Nacimiento")]
         public DateTime FechaNacimiento { get; set; }
+    }
 
+    public class RegisterMedicoViewModel
+    {
+        [Required]
+        [EmailAddress]
+        [Display(Name = "Correo electrónico")]
+        public string Email { get; set; }
+
+        [Required]
+        [StringLength(100, ErrorMessage = "El número de caracteres de {0} debe ser al menos {2}.", MinimumLength = 6)]
+        [DataType(DataType.Password)]
+        [Display(Name = "Contraseña")]
+        public string Password { get; set; }
+
+        [DataType(DataType.Password)]
+        [Display(Name = "Confirmar contraseña")]
+        [Compare("Password", ErrorMessage = "La contraseña y la contraseña de confirmación no coinciden.")]
+        public string ConfirmPassword { get; set; }
+
+        [Display(Name = "Rol de Usuario")]
+        public string RoleName { get; set; }
+
+        [Required]
+        [Display(Name = "Nombres")]
+        public string Nombre { get; set; }
+
+        [Required]
+        [Display(Name = "Apellidos")]
+        public string Apellido { get; set; }
+
+        [Required]
+        [Display(Name = "Tipo de Documento")]
+        public string TipoDocumento { get; set; }
+
+        [Required]
+        [Display(Name = "Numero de Documento")]
+        public string Documento { get; set; }
+
+        [Required]
+        [DataType(DataType.Date)]
+        [Display(Name = "Fecha de Nacimiento")]
+        public DateTime FechaNacimiento { get; set; }
+
+        [Required]
         [Display(Name = "Nombre de la Entidad")]
         public string NombreEntidad { get; set; }
 
+        [Required]
         [Display(Name = "Codigo de la Entidad")]
         public string CodigoEntidad { get; set; }
     }
