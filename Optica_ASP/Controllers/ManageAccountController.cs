@@ -105,7 +105,7 @@ namespace Optica_ASP.Controllers
             user.UserData.TipoDocumento = model.TipoDocumento;
             user.UserData.Documento = model.Documento;
             user.UserData.FechaNacimiento = model.FechaNacimiento;
-            user.UserName = model.Nombre;
+            user.UserName = model.Nombre + " " + model.Apellido;
 
             await UserManager.UpdateAsync(user);
             return RedirectToAction("UpdateData");
@@ -177,6 +177,7 @@ namespace Optica_ASP.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Medico")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> CreateHistorial(Historial model)

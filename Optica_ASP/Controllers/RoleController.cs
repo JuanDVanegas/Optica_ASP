@@ -9,7 +9,7 @@ using System.Web.Mvc;
 
 namespace Optica_ASP.Controllers
 {
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     public class RoleController : Controller
     {
         private ApplicationRoleManager _roleManager;

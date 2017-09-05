@@ -3,10 +3,17 @@
 }
 <div class="row">
     <div class="col-md-2 hidden-sm hidden-xs">
-        <img src="../../Images/medico.png" width="100%" height="100%" style="float: left; padding-right: 10px; padding-top:12px"/>
+        @if (User.IsInRole("Medico"))
+        {
+            <img src="../../Images/medico.png" style="float: left; padding-right: 10px; padding-top:12px; width:100%; height:100%;" />
+        }
+        else
+        {
+            <img src="../../Images/user.png" style="float: left; padding-right: 10px; padding-top:12px; width:100%; height:100%;" />
+        }
     </div>
     <div class="col-md-10">
-        <h1>@ViewBag.UserName</h1>
-        <h2>@ViewBag.Entidad</h2>
+        <h2>@ViewBag.UserName</h2>
+        <h3>@ViewBag.Entidad</h3>
     </div>
 </div>

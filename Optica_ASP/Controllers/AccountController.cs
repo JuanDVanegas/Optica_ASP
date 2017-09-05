@@ -180,7 +180,7 @@ namespace Optica_ASP.Controllers
                 return View(model);
             }
             var user = new ApplicationUser {
-                UserName = model.Nombre,
+                UserName = model.Nombre+" "+ model.Apellido,
                 Email = model.Email
             };
             if (User.IsInRole("Admin"))

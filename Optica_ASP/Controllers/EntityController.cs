@@ -11,6 +11,7 @@ using Optica_ASP.Models;
 
 namespace Optica_ASP.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class EntityController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();

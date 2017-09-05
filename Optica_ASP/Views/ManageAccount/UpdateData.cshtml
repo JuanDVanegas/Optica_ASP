@@ -8,8 +8,9 @@
         @Html.Partial("_MenuPartial")
     </div>
     <div class="col-md-9">
-        @using (Html.BeginForm("UpdateData", "ManageAccount", FormMethod.Post, new {@class = "form-horizontal", role = "form"}))
+        @using (Html.BeginForm("UpdateData", "ManageAccount", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
         {
+            @Html.AntiForgeryToken()
             @Html.ValidationSummary("", new { @class = "text-danger" })
             <div class="row">
                 <div class="col-md-12">
