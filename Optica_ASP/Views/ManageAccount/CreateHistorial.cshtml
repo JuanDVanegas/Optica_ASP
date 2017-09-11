@@ -6,16 +6,8 @@
 @using (Html.BeginForm("CreateHistorial", "ManageAccount", FormMethod.Post, new { @class = "form-horizontal", role = "form" })) 
 {
     @Html.AntiForgeryToken()
-    
+    @Html.ValidationSummary("", new { @class = "text-danger" })
     <div class="form-horizontal">
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.Fecha, htmlAttributes: new { @class = "control-label col-sm-3" })
-            <div class="col-sm-9 max-width">
-                @Html.EditorFor(model => model.Fecha, new { htmlAttributes = new { @class = "form-control", type = "date" } })
-                @Html.ValidationMessageFor(model => model.Fecha, "", new { @class = "text-danger" })
-            </div>
-        </div>
         <h3>Paciente</h3>
         <div class="form-group">
             @Html.LabelFor(m => m.Paciente.UserData.TipoDocumento, new { @class = "col-sm-3 control-label" })

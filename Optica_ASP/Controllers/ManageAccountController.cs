@@ -162,6 +162,8 @@ namespace Optica_ASP.Controllers
             }
             return View(historial);
         }
+
+        [Authorize(Roles = "Medico")]
         public ActionResult CreateHistorial()
         {
             List<SelectListItem> dType = new List<SelectListItem>();
@@ -182,6 +184,15 @@ namespace Optica_ASP.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> CreateHistorial(Historial model)
         {
+            if (User.IsInRole("Medico"))
+            {
+                var entidad = user.UserData.Medico.Entidad.Nombre;
+                ViewBag.Entidad = entidad;
+            }
+            List<SelectListItem> dType = new List<SelectListItem>();
+            foreach (var documentType in db.DocumentType)
+                dType.Add(new SelectListItem { Value = documentType.Nombre, Text = documentType.Nombre });
+            ViewBag.DTypes = dType;
             var medico = await UserManager.FindByIdAsync(User.Identity.GetUserId());
             var paciente = db.Paciente.FirstOrDefault(x =>
                 x.UserData.Documento == model.Paciente.UserData.Documento &&
@@ -206,7 +217,7 @@ namespace Optica_ASP.Controllers
                 };
                 var historial = new Historial
                 {
-                    Fecha = model.Fecha,
+                    Fecha = DateTime.Now,
                     MedicoId = medico.UserData.Medico.MedicoId,
                     PacienteId = paciente.PacienteId,
                     Registro = registro
