@@ -216,7 +216,6 @@
     <Compile Include="Controllers\EntityController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageAccountController.cs" />
-    <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -322,6 +321,7 @@
     <Content Include="Views\ManageAccount\HistorialDetails.cshtml" />
     <Content Include="Views\Account\RegisterMedico.cshtml" />
     <Content Include="Views\Account\RoleRegister.cshtml" />
+    <Content Include="Views\ManageAccount\ChangePassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

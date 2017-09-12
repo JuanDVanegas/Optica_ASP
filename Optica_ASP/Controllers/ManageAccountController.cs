@@ -10,6 +10,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Optica_ASP.Models;
 using System.Net;
 using PagedList;
+using Microsoft.Owin.Security;
 
 namespace Optica_ASP.Controllers
 {
@@ -59,17 +60,18 @@ namespace Optica_ASP.Controllers
             return View();
         }
 
-        public async Task<ActionResult> UpdateData()
+        public async Task<ActionResult> UpdateData(ManageMessageId? message)
         {
+            ViewBag.StatusMessage =
+                message == ManageMessageId.ChangePasswordSuccess ? "Su contraseña se ha cambiado."
+                : message == ManageMessageId.Error ? "Se ha producido un error."
+                : "";
             var userId = User.Identity.GetUserId();
             var user = await UserManager.FindByIdAsync(userId);
             string roleName = UserManager.GetRoles(userId).First();
             var model = new UpdateViewModel(user, roleName);
 
-            List<SelectListItem> dType = new List<SelectListItem>();
-            dType.Add(new SelectListItem { Value = model.TipoDocumento, Text = model.TipoDocumento });
-            foreach (var documentType in db.DocumentType)
-                dType.Add(new SelectListItem { Value = documentType.Nombre, Text = documentType.Nombre });
+            var dType = user.UserData.TipoDocumento;
             ViewBag.DTypes = dType;
 
             ViewBag.UserName = user.UserData.Nombre;
@@ -95,6 +97,7 @@ namespace Optica_ASP.Controllers
             if (user.Email != model.Email)
             {
                 user.Email = model.Email;
+                user.EmailConfirmed = false;
                 string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                 var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                 await UserManager.SendEmailAsync(user.Id, "Confirmar cuenta", callbackUrl);
@@ -102,9 +105,6 @@ namespace Optica_ASP.Controllers
 
             user.UserData.Nombre = model.Nombre;
             user.UserData.Apellido = model.Apellido;
-            user.UserData.TipoDocumento = model.TipoDocumento;
-            user.UserData.Documento = model.Documento;
-            user.UserData.FechaNacimiento = model.FechaNacimiento;
             user.UserName = model.Nombre + " " + model.Apellido;
 
             await UserManager.UpdateAsync(user);
@@ -184,6 +184,7 @@ namespace Optica_ASP.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> CreateHistorial(Historial model)
         {
+            var user = UserManager.FindById(User.Identity.GetUserId());
             if (User.IsInRole("Medico"))
             {
                 var entidad = user.UserData.Medico.Entidad.Nombre;
@@ -228,5 +229,94 @@ namespace Optica_ASP.Controllers
             }
             return View(model);
         }
+        public ActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ChangePassword(ChangePasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            var result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
+            if (result.Succeeded)
+            {
+                var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+                if (user != null)
+                {
+                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                }
+                return RedirectToAction("UpdateData", "ManageAccount", new { Message = ManageMessageId.ChangePasswordSuccess });
+            }
+            AddErrors(result);
+            return View(model);
+        }
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && _userManager != null)
+            {
+                _userManager.Dispose();
+                _userManager = null;
+            }
+
+            base.Dispose(disposing);
+        }
+
+        #region Aplicaciones auxiliares
+        // Se usan para protección XSRF al agregar inicios de sesión externos
+        private const string XsrfKey = "XsrfId";
+
+        private IAuthenticationManager AuthenticationManager
+        {
+            get
+            {
+                return HttpContext.GetOwinContext().Authentication;
+            }
+        }
+
+        private void AddErrors(IdentityResult result)
+        {
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError("", error);
+            }
+        }
+
+        private bool HasPassword()
+        {
+            var user = UserManager.FindById(User.Identity.GetUserId());
+            if (user != null)
+            {
+                return user.PasswordHash != null;
+            }
+            return false;
+        }
+
+        private bool HasPhoneNumber()
+        {
+            var user = UserManager.FindById(User.Identity.GetUserId());
+            if (user != null)
+            {
+                return user.PhoneNumber != null;
+            }
+            return false;
+        }
+
+        public enum ManageMessageId
+        {
+            AddPhoneSuccess,
+            ChangePasswordSuccess,
+            SetTwoFactorSuccess,
+            SetPasswordSuccess,
+            RemoveLoginSuccess,
+            RemovePhoneSuccess,
+            Error
+        }
+
+        #endregion
     }
 }
