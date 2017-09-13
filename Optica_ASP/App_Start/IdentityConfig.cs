@@ -41,7 +41,7 @@ namespace Optica_ASP
             #endregion
 
             MailMessage msg = new MailMessage();
-            msg.From = new MailAddress("david.vanegas@d2m.co");
+            msg.From = new MailAddress("opticaallinone@gmail.com");
             msg.To.Add(new MailAddress(message.Destination));
             msg.Subject = message.Subject;
             msg.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(text, null, MediaTypeNames.Text.Plain));

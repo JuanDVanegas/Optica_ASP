@@ -255,6 +255,31 @@ namespace Optica_ASP.Controllers
             AddErrors(result);
             return View(model);
         }
+
+        [Authorize(Roles = "Admin")]
+        public ActionResult AdministrarUsuario(bool? result)
+        {
+            if (result == false)
+            {
+                ViewBag.Result = "Usuario no encontrado";
+            }
+            if (result == true)
+            {
+                ViewBag.Result = "Usuario no encontrado";
+            }
+            return View();
+        }
+
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult> BuscarUsuario(string email)
+        {
+            var user = await UserManager.FindByEmailAsync(email);
+            if (user == null)
+            {
+                return RedirectToAction("AdministrarUsuario", new { result = true});
+            }
+            return View();
+        }
         protected override void Dispose(bool disposing)
         {
             if (disposing && _userManager != null)
