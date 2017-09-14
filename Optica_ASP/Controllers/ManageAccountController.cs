@@ -139,8 +139,8 @@ namespace Optica_ASP.Controllers
                 var entidad = user.UserData.Medico.Entidad.Nombre;
                 ViewBag.Entidad = entidad;
             }
-            int pageSize = 5;
-            int pageNumber = (page ?? 1);
+            var pageSize = 5;
+            var pageNumber = (page ?? 1);
             return View(historial.ToPagedList(pageNumber, pageSize));
         }
         public async Task<ActionResult> HistorialDetails(string id)
@@ -257,27 +257,77 @@ namespace Optica_ASP.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        public ActionResult AdministrarUsuario(bool? result)
+        public ActionResult AdminUsers(string search, int? page)
         {
-            if (result == false)
+            if (search != null)
             {
-                ViewBag.Result = "Usuario no encontrado";
+                page = 1;
             }
-            if (result == true)
+            var users = db.Users.ToList();
+            if (!string.IsNullOrEmpty(search))
             {
-                ViewBag.Result = "Usuario no encontrado";
+                users = db.Users.Where(x => x.Email.Contains(search)  || x.UserData.Documento.Contains(search)).ToList();
             }
-            return View();
+            int pageSize = 8;
+            int pageNumber = (page ?? 1);
+            return View(users.ToPagedList(pageNumber, pageSize));
         }
 
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> BuscarUsuario(string email)
+        public async Task<ActionResult> AdminUpdateUser(string id)
         {
-            var user = await UserManager.FindByEmailAsync(email);
-            if (user == null)
+            var user = await UserManager.FindByIdAsync(id);
+            var roleName = UserManager.GetRoles(id).First();
+            var roles = db.Roles.Select(role => new SelectListItem {Value = role.Name, Text = role.Name}).ToList();
+            var dType = db.DocumentType.Select(documentType => new SelectListItem {Value = documentType.Nombre, Text = documentType.Nombre}).ToList();
+            ViewBag.DTypes = dType;
+            ViewBag.Roles = roles;
+            var model = new UpdateViewModel(user, roleName);
+            ViewBag.DTypes = dType;
+            return View(model);
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        public async Task<ActionResult> AdminUpdateUser(UpdateViewModel model)
+        {
+            if (!ModelState.IsValid)
             {
-                return RedirectToAction("AdministrarUsuario", new { result = true});
+                return View(model);
             }
+            var user = await UserManager.FindByEmailAsync(model.Email);
+
+            if (user.Email != model.Email)
+            {
+                user.Email = model.Email;
+                user.EmailConfirmed = false;
+                string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                await UserManager.SendEmailAsync(user.Id, "Confirmar cuenta", callbackUrl);
+            }
+            var userRole = UserManager.GetRoles(user.Id).First();
+
+            user.UserData.Nombre = model.Nombre;
+            user.UserData.Apellido = model.Apellido;
+            user.UserData.TipoDocumento = model.TipoDocumento;
+            user.UserData.Documento = model.Documento;
+            user.UserData.FechaNacimiento = model.FechaNacimiento;
+            user.UserName = model.Nombre + " " + model.Apellido;
+            UserManager.RemoveFromRole(user.Id, userRole);
+            UserManager.AddToRole(user.Id, model.RoleName);
+
+            await UserManager.UpdateAsync(user);
+            return RedirectToAction("AdminUsers");
+        }
+
+        [Authorize(Roles = "Admin")]
+        public ActionResult AdminAddUser()
+        {
+            return View();
+        }
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult> AdminAddUser(UpdateViewModel model)
+        {
             return View();
         }
         protected override void Dispose(bool disposing)

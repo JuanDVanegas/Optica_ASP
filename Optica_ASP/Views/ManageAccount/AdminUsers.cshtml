@@ -1,0 +1,53 @@
+﻿@model PagedList.IPagedList<Optica_ASP.Models.ApplicationUser>
+@using PagedList.Mvc;
+@{
+    Layout = "../ManageAccount/_LayoutAccount.cshtml";
+    ViewBag.Title = "Administrar Usuarios";
+}
+@using (Html.BeginForm("AdminUsers", "ManageAccount", FormMethod.Get))
+{
+    <div class="col-sm-6">
+        <div class="input-group">
+            @Html.TextBox("Search", null, new { @class = "form-control", placeholder = "Documento o Correo electronico..." })
+            <span class="input-group-btn">
+                <input type="submit" value="Buscar" class="btn btn-default" />
+            </span>
+        </div>
+    </div>
+}
+<br/><br/>
+<table class="table">
+    <tr class="active">
+        <th>Nombre</th>
+        <th>Documento</th>
+        <th>Correo electronico</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserData.Nombre)&nbsp;@Html.DisplayFor(modelItem => item.UserData.Apellido)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserData.Documento)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.ActionLink("Detalles", "AdminUpdateUser", new { id = item.Id })
+            </td>
+        </tr>
+    }
+</table>
+<br />
+@Html.ActionLink("Agregar Usuario", "AdminAddUser")
+<div class="pull-right">
+    <p>Pagina @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) de @Model.PageCount</p>
+    @Html.PagedListPager(Model, page => Url.Action("Historial",
+        new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+</div>
+@if (User.IsInRole("Medico"))
+{
+    @Html.ActionLink("Agregar nuevo Regisro", "CreateHistorial")
+}

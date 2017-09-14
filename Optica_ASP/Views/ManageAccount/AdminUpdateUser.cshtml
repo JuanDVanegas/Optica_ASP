@@ -1,0 +1,66 @@
+﻿@model Optica_ASP.Models.UpdateViewModel
+@{
+    Layout = "../ManageAccount/_LayoutAccount.cshtml";
+    ViewBag.Title = "Administrar Usuarios";
+}
+
+@using (Html.BeginForm("AdminUpdateUser", "ManageAccount", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary("", new { @class = "text-danger" })
+    <p class="text-success">@ViewBag.StatusMessage</p>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                @Html.LabelFor(m => m.RoleName, new { @class = "col-md-4 control-label" })
+                <div class="col-md-8 max-width">
+                    @Html.DropDownListFor(m => m.RoleName, new SelectList(ViewBag.Roles, "Value", "Text"), new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Nombre, new {@class = "col-md-4 control-label"})
+                <div class="col-md-8 max-width">
+                    @Html.TextBoxFor(m => m.Nombre, new {@class = "form-control"})
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Apellido, new {@class = "col-md-4 control-label"})
+                <div class="col-md-8 max-width">
+                    @Html.TextBoxFor(m => m.Apellido, new {@class = "form-control"})
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.TipoDocumento, new {@class = "col-md-4 control-label"})
+                <div class="col-md-8 max-width">
+                    @Html.DropDownListFor(m => m.TipoDocumento, new SelectList(ViewBag.DTypes, "Value", "Text"), new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Documento, new {@class = "col-md-4 control-label"})
+                <div class="col-md-8 max-width">
+                    @Html.TextBoxFor(m => m.Documento, new {@class = "form-control"})
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.FechaNacimiento, new {@class = "col-md-4 control-label"})
+                <div class="col-md-8 max-width">
+                    @Html.EditorFor(m => m.FechaNacimiento, new {htmlAttributes = new {@class = "form-control" } })
+                </div>      
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Email, new {@class = "col-md-4 control-label"})
+                <div class="col-md-8 max-width">
+                    @Html.TextBoxFor(m => m.Email, new {@class = "form-control"})
+                </div>
+            </div>
+            <div class="form-group">
+                <a href='@Url.Action("ChangePassword", "ManageAccount")' class="col-md-offset-4 col-md-8">Cambiar la contraseña</a>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-4 col-md-8">
+                    <input type="submit" value="Actualizar" class="btn btn-default"/>
+                </div>
+            </div>
+        </div>
+    </div>
+}

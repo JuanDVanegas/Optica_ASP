@@ -322,6 +322,8 @@
     <Content Include="Views\Account\RegisterMedico.cshtml" />
     <Content Include="Views\Account\RoleRegister.cshtml" />
     <Content Include="Views\ManageAccount\ChangePassword.cshtml" />
+    <Content Include="Views\ManageAccount\AdminUsers.cshtml" />
+    <Content Include="Views\ManageAccount\AdminUpdateUser.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
