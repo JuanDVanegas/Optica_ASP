@@ -22,7 +22,7 @@ namespace Optica_ASP.Controllers
         }
 
         // GET: DocumentTypes/Details/5
-        public ActionResult Details(string id)
+        public ActionResult Details(int? id)
         {
             if (id == null)
             {
@@ -60,7 +60,7 @@ namespace Optica_ASP.Controllers
         }
 
         // GET: DocumentTypes/Edit/5
-        public ActionResult Edit(string id)
+        public ActionResult Edit(int? id)
         {
             if (id == null)
             {
@@ -91,7 +91,7 @@ namespace Optica_ASP.Controllers
         }
 
         // GET: DocumentTypes/Delete/5
-        public ActionResult Delete(string id)
+        public ActionResult Delete(int? id)
         {
             if (id == null)
             {
@@ -108,7 +108,7 @@ namespace Optica_ASP.Controllers
         // POST: DocumentTypes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(string id)
+        public ActionResult DeleteConfirmed(int? id)
         {
             DocumentType documentType = db.DocumentType.Find(id);
             db.DocumentType.Remove(documentType);

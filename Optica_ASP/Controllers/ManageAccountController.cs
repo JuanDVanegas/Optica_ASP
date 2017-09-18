@@ -284,6 +284,7 @@ namespace Optica_ASP.Controllers
             ViewBag.Roles = roles;
             var model = new UpdateViewModel(user, roleName);
             ViewBag.DTypes = dType;
+            TempData["Id"] = id;
             return View(model);
         }
 
@@ -291,11 +292,12 @@ namespace Optica_ASP.Controllers
         [HttpPost]
         public async Task<ActionResult> AdminUpdateUser(UpdateViewModel model)
         {
+            string id = TempData["id"].ToString();
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
-            var user = await UserManager.FindByEmailAsync(model.Email);
+            var user = await UserManager.FindByIdAsync(id);
 
             if (user.Email != model.Email)
             {
@@ -330,6 +332,32 @@ namespace Optica_ASP.Controllers
         {
             return View();
         }
+        //public ActionResult AdminChangePassword()
+        //{
+        //    return View();
+        //}
+
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<ActionResult> AdminChangePassword(AdminChangePasswordModel model)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return View(model);
+        //    }
+        //    var result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
+        //    if (result.Succeeded)
+        //    {
+        //        var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+        //        if (user != null)
+        //        {
+        //            await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+        //        }
+        //        return RedirectToAction("UpdateData", "ManageAccount", new { Message = ManageMessageId.ChangePasswordSuccess });
+        //    }
+        //    AddErrors(result);
+        //    return View(model);
+        //}
         protected override void Dispose(bool disposing)
         {
             if (disposing && _userManager != null)
