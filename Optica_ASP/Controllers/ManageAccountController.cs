@@ -332,32 +332,35 @@ namespace Optica_ASP.Controllers
         {
             return View();
         }
-        //public ActionResult AdminChangePassword()
-        //{
-        //    return View();
-        //}
+        public ActionResult AdminChangePassword(string id)
+        {
+            TempData["id"] = id;
+            return View();
+        }
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<ActionResult> AdminChangePassword(AdminChangePasswordModel model)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return View(model);
-        //    }
-        //    var result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
-        //    if (result.Succeeded)
-        //    {
-        //        var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-        //        if (user != null)
-        //        {
-        //            await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-        //        }
-        //        return RedirectToAction("UpdateData", "ManageAccount", new { Message = ManageMessageId.ChangePasswordSuccess });
-        //    }
-        //    AddErrors(result);
-        //    return View(model);
-        //}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> AdminChangePassword(AdminChangePasswordModel model)
+        {
+            string id = TempData["id"].ToString();
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            var token = await UserManager.GeneratePasswordResetTokenAsync(id);
+            var result = await UserManager.ResetPasswordAsync(id,token,model.NewPassword);
+            if (result.Succeeded)
+            {
+                var user = await UserManager.FindByIdAsync(id);
+                if (user != null)
+                {
+                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                }
+                return RedirectToAction("AdminUpdateUser", "ManageAccount", new { id = user.Id});
+            }
+            AddErrors(result);
+            return View(model);
+        }
         protected override void Dispose(bool disposing)
         {
             if (disposing && _userManager != null)

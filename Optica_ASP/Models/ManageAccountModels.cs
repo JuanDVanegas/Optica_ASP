@@ -9,6 +9,19 @@ using Microsoft.AspNet.Identity;
 
 namespace Optica_ASP.Models
 {
+    public class AdminChangePasswordModel
+    {
+        [Required]
+        [StringLength(100, ErrorMessage = "{0} debe tener al menos {2} caracteres de longitud.", MinimumLength = 8)]
+        [DataType(DataType.Password)]
+        [Display(Name = "Contraseña nueva")]
+        public string NewPassword { get; set; }
+
+        [DataType(DataType.Password)]
+        [Display(Name = "Confirme la contraseña nueva")]
+        [Compare("NewPassword", ErrorMessage = "La contraseña nueva y la contraseña de confirmación no coinciden.")]
+        public string ConfirmPassword { get; set; }
+    }
     public class UpdateViewModel
     {
         public UpdateViewModel()
