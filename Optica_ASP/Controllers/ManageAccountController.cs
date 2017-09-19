@@ -278,12 +278,13 @@ namespace Optica_ASP.Controllers
         {
             var user = await UserManager.FindByIdAsync(id);
             var roleName = UserManager.GetRoles(id).First();
-            var roles = db.Roles.Select(role => new SelectListItem {Value = role.Name, Text = role.Name}).ToList();
+            var entity = db.Entity.Select(role => new SelectListItem { Value = role.EntityId, Text = role.Nombre }).ToList();
             var dType = db.DocumentType.Select(documentType => new SelectListItem {Value = documentType.Nombre, Text = documentType.Nombre}).ToList();
             ViewBag.DTypes = dType;
-            ViewBag.Roles = roles;
+            ViewBag.Role = roleName;
             var model = new UpdateViewModel(user, roleName);
-            ViewBag.DTypes = dType;
+            ViewBag.Entity = entity;
+            ViewBag.Enabled = user.Enabled;
             TempData["Id"] = id;
             return View(model);
         }
@@ -307,7 +308,6 @@ namespace Optica_ASP.Controllers
                 var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                 await UserManager.SendEmailAsync(user.Id, "Confirmar cuenta", callbackUrl);
             }
-            var userRole = UserManager.GetRoles(user.Id).First();
 
             user.UserData.Nombre = model.Nombre;
             user.UserData.Apellido = model.Apellido;
@@ -315,8 +315,17 @@ namespace Optica_ASP.Controllers
             user.UserData.Documento = model.Documento;
             user.UserData.FechaNacimiento = model.FechaNacimiento;
             user.UserName = model.Nombre + " " + model.Apellido;
-            UserManager.RemoveFromRole(user.Id, userRole);
-            UserManager.AddToRole(user.Id, model.RoleName);
+
+            await UserManager.UpdateAsync(user);
+            return RedirectToAction("AdminUsers");
+        }
+
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult> AdminEnabledUser(bool enabled)
+        {
+            string id = TempData["id"].ToString();
+            var user = await UserManager.FindByIdAsync(id);
+            user.Enabled = enabled;
 
             await UserManager.UpdateAsync(user);
             return RedirectToAction("AdminUsers");
@@ -332,30 +341,29 @@ namespace Optica_ASP.Controllers
         {
             return View();
         }
-        public ActionResult AdminChangePassword(string id)
+
+        [Authorize(Roles = "Admin")]
+        public ActionResult AdminChangePassword(string email)
         {
-            TempData["id"] = id;
+            TempData["email"] = email;
             return View();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> AdminChangePassword(AdminChangePasswordModel model)
         {
-            string id = TempData["id"].ToString();
+            string email = TempData["email"].ToString();
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
-            var token = await UserManager.GeneratePasswordResetTokenAsync(id);
-            var result = await UserManager.ResetPasswordAsync(id,token,model.NewPassword);
+            var user = await UserManager.FindByEmailAsync(email);
+            var token = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
+            var result = await UserManager.ResetPasswordAsync(user.Id,token,model.NewPassword);
             if (result.Succeeded)
             {
-                var user = await UserManager.FindByIdAsync(id);
-                if (user != null)
-                {
-                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-                }
                 return RedirectToAction("AdminUpdateUser", "ManageAccount", new { id = user.Id});
             }
             AddErrors(result);

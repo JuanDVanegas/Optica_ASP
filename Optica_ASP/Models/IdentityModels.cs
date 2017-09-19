@@ -22,6 +22,7 @@ namespace Optica_ASP.Models
             return userIdentity;
         }
         public virtual UserData UserData { get; set; }
+        public bool Enabled { get; set; }
     }    
     public class ApplicationRole : IdentityRole
     {

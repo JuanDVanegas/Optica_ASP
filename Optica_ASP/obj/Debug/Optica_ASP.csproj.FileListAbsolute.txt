@@ -327,3 +327,4 @@ C:\Users\SOPORTE\Documents\Visual Studio 2015\Projects\Optica_ASP\Optica_ASP\bin
 C:\Users\SOPORTE\Documents\Visual Studio 2015\Projects\Optica_ASP\Optica_ASP\bin\PagedList.Mvc.dll
 C:\Users\SOPORTE\Documents\Visual Studio 2015\Projects\Optica_ASP\Optica_ASP\bin\PagedList.xml
 C:\Users\SOPORTE\Documents\Visual Studio 2015\Projects\Optica_ASP\Optica_ASP\bin\PagedList.Mvc.xml
+C:\Users\Juan David\Documents\GitHub\Optica_ASP\Optica_ASP\obj\Debug\Optica_ASP.Migrations.estadoUser.resources

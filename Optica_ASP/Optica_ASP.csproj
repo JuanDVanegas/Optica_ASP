@@ -228,6 +228,10 @@
     <Compile Include="Migrations\201709042053100_fk_historial.Designer.cs">
       <DependentUpon>201709042053100_fk_historial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201709191604222_estadoUser.cs" />
+    <Compile Include="Migrations\201709191604222_estadoUser.Designer.cs">
+      <DependentUpon>201709191604222_estadoUser.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\EntityModels.cs" />
@@ -347,6 +351,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201709042053100_fk_historial.resx">
       <DependentUpon>201709042053100_fk_historial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201709191604222_estadoUser.resx">
+      <DependentUpon>201709191604222_estadoUser.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -75,6 +75,11 @@ namespace Optica_ASP.Controllers
                 ModelState.AddModelError("", "No se ha podido encontrar tu cuenta");
                 return View(model);
             }
+            if (user.Enabled == false)
+            {
+                ModelState.AddModelError("", "Tu cuenta se encuentra deshabilitada, contacta un administrador.");
+                return View(model);
+            }
             // No cuenta los errores de inicio de sesión para el bloqueo de la cuenta
             // Para permitir que los errores de contraseña desencadenen el bloqueo de la cuenta, cambie a shouldLockout: true
             var result = await SignInManager.PasswordSignInAsync(user.UserName, model.Password, model.RememberMe, shouldLockout: true);
@@ -181,34 +186,19 @@ namespace Optica_ASP.Controllers
             }
             var user = new ApplicationUser {
                 UserName = model.Nombre+" "+ model.Apellido,
-                Email = model.Email
+                Email = model.Email,
+                Enabled = true
             };
-            if (User.IsInRole("Admin"))
+            user.UserData = new UserData
             {
-                roleName = "Admin";
-                user.UserData = new UserData
-                {
-                    Nombre = model.Nombre,
-                    Apellido = model.Apellido,
-                    TipoDocumento = model.TipoDocumento,
-                    Documento = model.Documento,
-                    FechaNacimiento = model.FechaNacimiento,
-                    User = user,
-                };
-            }
-            else
-            {
-                user.UserData = new UserData
-                {
-                    Nombre = model.Nombre,
-                    Apellido = model.Apellido,
-                    TipoDocumento = model.TipoDocumento,
-                    Documento = model.Documento,
-                    FechaNacimiento = model.FechaNacimiento,
-                    User = user,
-                    Paciente = new Paciente()
-                };
-            }
+                Nombre = model.Nombre,
+                Apellido = model.Apellido,
+                TipoDocumento = model.TipoDocumento,
+                Documento = model.Documento,
+                FechaNacimiento = model.FechaNacimiento,
+                User = user,
+                Paciente = new Paciente()
+            };
             var result = await UserManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
             {
@@ -250,7 +240,8 @@ namespace Optica_ASP.Controllers
             var user = new ApplicationUser
             {
                 UserName = model.Nombre,
-                Email = model.Email
+                Email = model.Email,
+                Enabled = true
             };
             Entity entidad = await db.Entity.FirstOrDefaultAsync(x => x.Nombre == model.NombreEntidad && x.Codigo == model.CodigoEntidad);
 

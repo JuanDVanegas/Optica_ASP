@@ -14,7 +14,7 @@
             <div class="form-group">
                 @Html.LabelFor(m => m.RoleName, new { @class = "col-md-4 control-label" })
                 <div class="col-md-8 max-width">
-                    @Html.DropDownListFor(m => m.RoleName, new SelectList(ViewBag.Roles, "Value", "Text"), new { @class = "form-control" })
+                    @Html.TextBoxFor(m => m.RoleName, new { @class = "form-control", @readonly = "readonly"})
                 </div>
             </div>
             <div class="form-group">
@@ -53,13 +53,43 @@
                     @Html.TextBoxFor(m => m.Email, new {@class = "form-control"})
                 </div>
             </div>
+            @if (Model.RoleName == "Medico")
+            {
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Entidad, new { @class = "col-md-4 control-label" })
+                    <div class="col-md-8 max-width">
+                        @Html.DropDownListFor(m => m.Entidad, new SelectList(ViewBag.Entity, "Value", "Text"), new { @class = "form-control" })
+                    </div>
+                </div>
+            }
             <div class="form-group">
-                <a href='@Url.Action("ChangePassword", "ManageAccount")' class="col-md-offset-4 col-md-8">Cambiar la contraseña</a>
+                <a href='@Url.Action("AdminUsers", "ManageAccount")' class="col-md-4">Volver</a>
+                <a href='@Url.Action("AdminChangePassword", "ManageAccount", new {email = Model.Email})' class="col-md-8">Cambiar la contraseña</a>
             </div>
             <div class="form-group">
-                <div class="col-md-offset-4 col-md-8">
+                <div class="col-md-offset-4 col-md-2">
                     <input type="submit" value="Actualizar" class="btn btn-default"/>
                 </div>
+                @if (ViewBag.Enabled)
+                {
+                     using (Html.BeginForm("AdminEnabledUser", "ManageAccount", FormMethod.Get))
+                     {
+                        @Html.Hidden("Enabled", false)
+                         <div class="col-md-6">
+                             <input type="submit" value="Deshabilitar" class="btn btn-danger"/>
+                         </div>
+                     }
+                }
+                else
+                {
+                     using (Html.BeginForm("AdminEnabledUser", "ManageAccount", FormMethod.Get))
+                     {
+                         @Html.Hidden("Enabled", true)
+                         <div class="col-md-6">
+                             <input type="submit" value="Habilitar" class="btn btn-success"/>
+                         </div>
+                     }
+                }
             </div>
         </div>
     </div>
