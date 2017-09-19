@@ -48,7 +48,6 @@ namespace Optica_ASP.Controllers
             private set { _userManager = value; }
         }
         #endregion
-
         public ActionResult Index()
         {
             var user = UserManager.FindById(User.Identity.GetUserId());

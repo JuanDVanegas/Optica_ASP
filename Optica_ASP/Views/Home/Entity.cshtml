@@ -1,0 +1,29 @@
+﻿@model List<Optica_ASP.Models.Entity>
+
+@{
+    ViewBag.Title = "Entidades";
+}
+
+<h2>@ViewBag.Title</h2>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.First().Nombre)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().Direccion)
+        </th>
+    </tr>
+
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nombre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Direccion)
+            </td>
+        </tr>
+    }
+
+</table>

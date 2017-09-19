@@ -72,23 +72,11 @@
                 </div>
                 @if (ViewBag.Enabled)
                 {
-                     using (Html.BeginForm("AdminEnabledUser", "ManageAccount", FormMethod.Get))
-                     {
-                        @Html.Hidden("Enabled", false)
-                         <div class="col-md-6">
-                             <input type="submit" value="Deshabilitar" class="btn btn-danger"/>
-                         </div>
-                     }
+                    <a href='@Url.Action("AdminEnabledUser", "ManageAccount", new {enabled = false})' class="btn btn-danger">Deshabilitar</a>
                 }
                 else
                 {
-                     using (Html.BeginForm("AdminEnabledUser", "ManageAccount", FormMethod.Get))
-                     {
-                         @Html.Hidden("Enabled", true)
-                         <div class="col-md-6">
-                             <input type="submit" value="Habilitar" class="btn btn-success"/>
-                         </div>
-                     }
+                    <a href='@Url.Action("AdminEnabledUser", "ManageAccount", new {enabled = true})' class="btn btn-success">Habilitar</a>
                 }
             </div>
         </div>
