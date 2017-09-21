@@ -185,7 +185,7 @@ namespace Optica_ASP.Controllers
                 return View(model);
             }
             var user = new ApplicationUser {
-                UserName = model.Nombre+" "+ model.Apellido,
+                UserName = model.Email,
                 Email = model.Email,
                 Enabled = true
             };

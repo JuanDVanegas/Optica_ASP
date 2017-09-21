@@ -8,7 +8,7 @@
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary("", new { @class = "text-danger" })
-    <p class="text-success">@ViewBag.StatusMessage</p>
+    <p class="text-danger">@ViewBag.Message</p>
     <div class="row">
         <div class="col-md-12">
             <div class="form-group">
@@ -72,12 +72,13 @@
                 </div>
                 @if (ViewBag.Enabled)
                 {
-                    <a href='@Url.Action("AdminEnabledUser", "ManageAccount", new {enabled = false})' class="btn btn-danger">Deshabilitar</a>
+                    <a href='@Url.Action("AdminEnabledUser", "ManageAccount", new {enabled = false})' class="btn btn-warning">Deshabilitar</a>
                 }
                 else
                 {
                     <a href='@Url.Action("AdminEnabledUser", "ManageAccount", new {enabled = true})' class="btn btn-success">Habilitar</a>
                 }
+                <a href='@Url.Action("AdminDeleteUser", "ManageAccount", new {email = Model.Email})' class="btn btn-danger">Eliminar</a>
             </div>
         </div>
     </div>

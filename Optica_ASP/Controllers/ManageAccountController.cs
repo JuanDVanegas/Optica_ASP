@@ -21,7 +21,7 @@ namespace Optica_ASP.Controllers
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
         private ApplicationRoleManager _roleManager;
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private ApplicationDbContext _db = new ApplicationDbContext();
         public ManageAccountController() { }
         public ManageAccountController(
             ApplicationUserManager userManager,
@@ -48,14 +48,12 @@ namespace Optica_ASP.Controllers
             private set { _userManager = value; }
         }
         #endregion
+
         public ActionResult Index()
         {
             var user = UserManager.FindById(User.Identity.GetUserId());
-            if (User.IsInRole("Medico"))
-            {
-                var entidad = user.UserData.Medico.Entidad.Nombre;
-                ViewBag.Entidad = entidad;
-            }
+            ViewBag.Nombre = user.UserData.Nombre + " " + user.UserData.Apellido;
+            ViewBag.Entidad = user.UserData.Medico == null ? "": user.UserData.Medico.Entidad.Nombre;
             return View();
         }
 
@@ -72,13 +70,9 @@ namespace Optica_ASP.Controllers
 
             var dType = user.UserData.TipoDocumento;
             ViewBag.DTypes = dType;
-
-            ViewBag.UserName = user.UserData.Nombre;
-            if (User.IsInRole("Medico"))
-            {
-                var entidad = user.UserData.Medico.Entidad.Nombre;
-                ViewBag.Entidad = entidad;
-            }
+            ViewBag.EmailConfirmed = user.EmailConfirmed;
+            ViewBag.Nombre = user.UserData.Nombre + " " + user.UserData.Apellido;
+            ViewBag.Entidad = user.UserData.Medico == null ? "" : user.UserData.Medico.Entidad.Nombre;
 
             return View(model);
         }
@@ -104,7 +98,7 @@ namespace Optica_ASP.Controllers
 
             user.UserData.Nombre = model.Nombre;
             user.UserData.Apellido = model.Apellido;
-            user.UserName = model.Nombre + " " + model.Apellido;
+            user.UserName = model.Email;
 
             await UserManager.UpdateAsync(user);
             return RedirectToAction("UpdateData");
@@ -117,7 +111,7 @@ namespace Optica_ASP.Controllers
                 page = 1;
             }
             var user = UserManager.FindById(User.Identity.GetUserId());
-            var historial = db.Historial.ToList();
+            var historial = _db.Historial.ToList();
             if (User.IsInRole("Paciente"))
             {
                 historial = user.UserData.Paciente.Historial;
@@ -135,9 +129,9 @@ namespace Optica_ASP.Controllers
                     historial = historial.Where(h => h.Paciente.UserData.Nombre.Contains(searchString)
                                                      || h.Paciente.UserData.Documento.Contains(searchString)).ToList();
                 }
-                var entidad = user.UserData.Medico.Entidad.Nombre;
-                ViewBag.Entidad = entidad;
             }
+            ViewBag.Nombre = user.UserData.Nombre + " " + user.UserData.Apellido;
+            ViewBag.Entidad = user.UserData.Medico == null ? "" : user.UserData.Medico.Entidad.Nombre;
             var pageSize = 5;
             var pageNumber = (page ?? 1);
             return View(historial.ToPagedList(pageNumber, pageSize));
@@ -148,17 +142,14 @@ namespace Optica_ASP.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Historial historial = await db.Historial.FindAsync(id);
+            Historial historial = await _db.Historial.FindAsync(id);
             if (historial == null)
             {
                 return RedirectToAction("Historial");
             }
             var user = UserManager.FindById(User.Identity.GetUserId());
-            if (User.IsInRole("Medico"))
-            {
-                var entidad = user.UserData.Medico.Entidad.Nombre;
-                ViewBag.Entidad = entidad;
-            }
+            ViewBag.Nombre = user.UserData.Nombre + " " + user.UserData.Apellido;
+            ViewBag.Entidad = user.UserData.Medico.Entidad.Nombre;
             return View(historial);
         }
 
@@ -166,15 +157,12 @@ namespace Optica_ASP.Controllers
         public ActionResult CreateHistorial()
         {
             List<SelectListItem> dType = new List<SelectListItem>();
-            foreach (var documentType in db.DocumentType)
+            foreach (var documentType in _db.DocumentType)
                 dType.Add(new SelectListItem { Value = documentType.Nombre, Text = documentType.Nombre });
             ViewBag.DTypes = dType;
             var user = UserManager.FindById(User.Identity.GetUserId());
-            if (User.IsInRole("Medico"))
-            {
-                var entidad = user.UserData.Medico.Entidad.Nombre;
-                ViewBag.Entidad = entidad;
-            }
+            ViewBag.Nombre = user.UserData.Nombre + " " + user.UserData.Apellido;
+            ViewBag.Entidad = user.UserData.Medico == null ? "" : user.UserData.Medico.Entidad.Nombre;
             return View();
         }
 
@@ -190,11 +178,11 @@ namespace Optica_ASP.Controllers
                 ViewBag.Entidad = entidad;
             }
             List<SelectListItem> dType = new List<SelectListItem>();
-            foreach (var documentType in db.DocumentType)
+            foreach (var documentType in _db.DocumentType)
                 dType.Add(new SelectListItem { Value = documentType.Nombre, Text = documentType.Nombre });
             ViewBag.DTypes = dType;
             var medico = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-            var paciente = db.Paciente.FirstOrDefault(x =>
+            var paciente = _db.Paciente.FirstOrDefault(x =>
                 x.UserData.Documento == model.Paciente.UserData.Documento &&
                 x.UserData.TipoDocumento == model.Paciente.UserData.TipoDocumento);
             if (paciente == null)
@@ -222,14 +210,17 @@ namespace Optica_ASP.Controllers
                     PacienteId = paciente.PacienteId,
                     Registro = registro
                 };
-                db.Historial.Add(historial);
-                await db.SaveChangesAsync();
+                _db.Historial.Add(historial);
+                await _db.SaveChangesAsync();
                 return RedirectToAction("Historial");
             }
             return View(model);
         }
         public ActionResult ChangePassword()
         {
+            var user = UserManager.FindById(User.Identity.GetUserId());
+            ViewBag.Nombre = user.UserData.Nombre + " " + user.UserData.Apellido;
+            ViewBag.Entidad = user.UserData.Medico == null ? "" : user.UserData.Medico.Entidad.Nombre;
             return View();
         }
 
@@ -262,27 +253,32 @@ namespace Optica_ASP.Controllers
             {
                 page = 1;
             }
-            var users = db.Users.ToList();
+            var users = _db.Users.ToList();
             if (!string.IsNullOrEmpty(search))
             {
-                users = db.Users.Where(x => x.Email.Contains(search)  || x.UserData.Documento.Contains(search)).ToList();
+                users = _db.Users.Where(x => x.Email.Contains(search)  || x.UserData.Documento.Contains(search)).ToList();
             }
+            var myUser = UserManager.FindById(User.Identity.GetUserId());
+            ViewBag.Nombre = myUser.UserData.Nombre + " " + myUser.UserData.Apellido;
             int pageSize = 8;
             int pageNumber = (page ?? 1);
             return View(users.ToPagedList(pageNumber, pageSize));
         }
 
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> AdminUpdateUser(string id)
+        public async Task<ActionResult> AdminUpdateUser(string id, string message)
         {
+            ViewBag.Message = message;
+            var myUser = UserManager.FindById(User.Identity.GetUserId());
+            ViewBag.Nombre = myUser.UserData.Nombre + " " + myUser.UserData.Apellido;
             var user = await UserManager.FindByIdAsync(id);
             var roleName = UserManager.GetRoles(id).First();
-            var entity = db.Entity.Select(role => new SelectListItem { Value = role.EntityId, Text = role.Nombre }).ToList();
-            var dType = db.DocumentType.Select(documentType => new SelectListItem {Value = documentType.Nombre, Text = documentType.Nombre}).ToList();
+            var entitys = _db.Entity.Select(entity => new SelectListItem { Value = entity.EntityId, Text = entity.Nombre }).ToList();
+            var dType = _db.DocumentType.Select(documentType => new SelectListItem {Value = documentType.Nombre, Text = documentType.Nombre}).ToList();
             ViewBag.DTypes = dType;
             ViewBag.Role = roleName;
             var model = new UpdateViewModel(user, roleName);
-            ViewBag.Entity = entity;
+            ViewBag.Entity = entitys;
             ViewBag.Enabled = user.Enabled;
             TempData["Id"] = id;
             return View(model);
@@ -313,7 +309,7 @@ namespace Optica_ASP.Controllers
             user.UserData.TipoDocumento = model.TipoDocumento;
             user.UserData.Documento = model.Documento;
             user.UserData.FechaNacimiento = model.FechaNacimiento;
-            user.UserName = model.Nombre + " " + model.Apellido;
+            user.UserName = model.Email;
 
             await UserManager.UpdateAsync(user);
             return RedirectToAction("AdminUsers");
@@ -325,25 +321,112 @@ namespace Optica_ASP.Controllers
             string id = TempData["id"].ToString();
             var user = await UserManager.FindByIdAsync(id);
             user.Enabled = enabled;
-
+            var myUser = UserManager.FindById(User.Identity.GetUserId());
+            ViewBag.Nombre = myUser.UserData.Nombre + " " + myUser.UserData.Apellido;
             await UserManager.UpdateAsync(user);
+            return RedirectToAction("AdminUsers");
+        }
+        
+        [Authorize(Roles = "Admin")]
+        public ActionResult AdminDeleteUser(string email)
+        {
+            var user = UserManager.FindByEmail(email);
+            var historial =
+                _db.Historial.FirstOrDefault(x => x.MedicoId == user.UserData.Medico.MedicoId || 
+                                            x.PacienteId == user.UserData.Paciente.PacienteId);
+            if (historial != null)
+            {
+                return RedirectToAction("AdminUpdateUser", "ManageAccount", new {id = user.Id, message = "No es posible eliminar el usuario."});
+            }
             return RedirectToAction("AdminUsers");
         }
 
         [Authorize(Roles = "Admin")]
         public ActionResult AdminAddUser()
         {
+            var myUser = UserManager.FindById(User.Identity.GetUserId());
+            ViewBag.Nombre = myUser.UserData.Nombre + " " + myUser.UserData.Apellido;
+            var roles = _db.Roles.Select(role => new SelectListItem { Value = role.Name, Text = role.Name }).ToList();
+            var dType = _db.DocumentType.Select(documentType => new SelectListItem { Value = documentType.Nombre, Text = documentType.Nombre }).ToList();
+            var entitys = _db.Entity.Select(entity => new SelectListItem { Value = entity.EntityId, Text = entity.Nombre }).ToList();
+            ViewBag.Roles = roles;
+            ViewBag.DType = dType;
+            ViewBag.Entitys = entitys;
             return View();
         }
+
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> AdminAddUser(UpdateViewModel model)
+        [HttpPost]
+        public async Task<ActionResult> AdminAddUser(AdminAddUserViewModel model)
         {
-            return View();
+            var roles = _db.Roles.Select(role => new SelectListItem { Value = role.Name, Text = role.Name }).ToList();
+            var dType = _db.DocumentType.Select(documentType => new SelectListItem { Value = documentType.Nombre, Text = documentType.Nombre }).ToList();
+            var entitys = _db.Entity.Select(entity => new SelectListItem { Value = entity.EntityId, Text = entity.Nombre }).ToList();
+            ViewBag.Roles = roles;
+            ViewBag.DType = dType;
+            ViewBag.Entitys = entitys;
+
+            var identityUser = await UserManager.FindByEmailAsync(model.Email);
+            var userData = await _db.UserData.FirstOrDefaultAsync(x => x.Documento == model.Documento && x.TipoDocumento == model.TipoDocumento);
+            if (identityUser != null || userData != null)
+            {
+                ModelState.AddModelError("", "No es posible registrar este usuario.");
+                return View(model);
+            }
+            var user = new ApplicationUser
+            {
+                UserName = model.Email,
+                Email = model.Email,
+                Enabled = true
+            };
+            user.UserData = new UserData
+            {
+                Nombre = model.Nombre,
+                Apellido = model.Apellido,
+                TipoDocumento = model.TipoDocumento,
+                Documento = model.Documento,
+                FechaNacimiento = model.FechaNacimiento,
+                User = user,
+            };
+            if (model.RoleName=="Paciente")
+            {
+                user.UserData.Paciente = new Paciente();
+            }
+            if (model.RoleName == "Medico")
+            {
+                var entity = _db.Entity.FirstOrDefault(x => x.Nombre == model.NombreEntidad);
+                if (entity != null)
+                {
+                    user.UserData.Medico = new Medico { EntidaId = entity.EntityId };
+                }
+                else
+                {
+                    ModelState.AddModelError("","Problema al validar la entidad");
+                    return View(model);
+                }
+            }
+            var result = await UserManager.CreateAsync(user, model.Documento);
+            if (result.Succeeded)
+            {
+                result = await UserManager.AddToRoleAsync(user.Id, model.RoleName);
+                // Para obtener más información sobre cómo habilitar la confirmación de cuenta y el restablecimiento de contraseña, visite http://go.microsoft.com/fwlink/?LinkID=320771
+                // Enviar correo electrónico con este vínculo
+                string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                await UserManager.SendEmailAsync(user.Id, "Confirmar cuenta", callbackUrl);
+
+                return RedirectToAction("AdminUsers", "ManageAccount");
+            }
+            AddErrors(result);
+            // Si llegamos a este punto, es que se ha producido un error y volvemos a mostrar el formulario
+            return View(model);
         }
 
         [Authorize(Roles = "Admin")]
         public ActionResult AdminChangePassword(string email)
         {
+            var myUser = UserManager.FindById(User.Identity.GetUserId());
+            ViewBag.Nombre = myUser.UserData.Nombre + " " + myUser.UserData.Apellido;
             TempData["email"] = email;
             return View();
         }
@@ -399,26 +482,6 @@ namespace Optica_ASP.Controllers
             }
         }
 
-        private bool HasPassword()
-        {
-            var user = UserManager.FindById(User.Identity.GetUserId());
-            if (user != null)
-            {
-                return user.PasswordHash != null;
-            }
-            return false;
-        }
-
-        private bool HasPhoneNumber()
-        {
-            var user = UserManager.FindById(User.Identity.GetUserId());
-            if (user != null)
-            {
-                return user.PhoneNumber != null;
-            }
-            return false;
-        }
-
         public enum ManageMessageId
         {
             AddPhoneSuccess,
@@ -431,5 +494,6 @@ namespace Optica_ASP.Controllers
         }
 
         #endregion
+
     }
 }

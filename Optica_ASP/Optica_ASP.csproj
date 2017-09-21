@@ -330,6 +330,7 @@
     <Content Include="Views\ManageAccount\AdminUpdateUser.cshtml" />
     <Content Include="Views\ManageAccount\AdminChangePassword.cshtml" />
     <Content Include="Views\Home\Entity.cshtml" />
+    <Content Include="Views\ManageAccount\AdminAddUser.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

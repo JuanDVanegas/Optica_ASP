@@ -1,7 +1,4 @@
-﻿@{
-    ViewBag.Username = User.Identity.Name;
-}
-<div class="row">
+﻿<div class="row">
     <div class="col-md-2 hidden-sm hidden-xs">
         @if (User.IsInRole("Medico"))
         {
@@ -13,7 +10,7 @@
         }
     </div>
     <div class="col-md-10">
-        <h2>@ViewBag.UserName</h2>
+        <h2>@ViewBag.Nombre</h2>
         <h3>@ViewBag.Entidad</h3>
     </div>
 </div>
